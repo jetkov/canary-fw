@@ -38,7 +38,7 @@
  *
  */
 #include "sdk_common.h"
-#if NRF_MODULE_ENABLED(BLE_LBS)
+//#if NRF_MODULE_ENABLED(BLE_LBS)
 #include "canary_ble.h"
 #include "ble_srv_common.h"
 
@@ -116,7 +116,7 @@ void ble_lbs_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context)
 
 uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init)
 {
-    uint32_t              err_code;
+    ret_code_t              err_code;
     ble_uuid_t            ble_uuid;
     ble_add_char_params_t add_char_params;
 
@@ -190,6 +190,8 @@ uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init)
     //add_char_params.write_access = SEC_OPEN;
 
     //return characteristic_add(p_lbs->service_handle, &add_char_params, &p_lbs->led_char_handles);
+
+    return err_code;
 }
 
 
@@ -229,4 +231,4 @@ uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint1
     return ble_canary_notify(conn_handle, p_lbs, uuid, dataArray, 2);
 }
 
-#endif // NRF_MODULE_ENABLED(BLE_LBS)
+//#endif // NRF_MODULE_ENABLED(BLE_LBS)
