@@ -9212,7 +9212,7 @@ LOAD linker stubs
  .comment       0x0000000000000025       0x26 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
  .comment       0x0000000000000025       0x26 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 5.42/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
 
-.debug_line     0x0000000000000000    0x1dc21
+.debug_line     0x0000000000000000    0x1dc1e
  .debug_line    0x0000000000000000      0x21e Output/Release/Obj/ble_app_blinky_pca10040_s132/thumb_crt0.o
  .debug_line    0x000000000000021e      0x7ba Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_serial.o
  .debug_line    0x00000000000009d8      0xaa1 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_uart.o
@@ -9258,9 +9258,9 @@ LOAD linker stubs
  .debug_line    0x000000000001b754      0xb68 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh.o
  .debug_line    0x000000000001c2bc      0x9eb Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_ble.o
  .debug_line    0x000000000001cca7      0x690 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
- .debug_line    0x000000000001d337      0x8ea Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
+ .debug_line    0x000000000001d337      0x8e7 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
-.debug_info     0x0000000000000000    0x34ebf
+.debug_info     0x0000000000000000    0x34ecb
  .debug_info    0x0000000000000000       0x22 Output/Release/Obj/ble_app_blinky_pca10040_s132/thumb_crt0.o
  .debug_info    0x0000000000000022      0x77b Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_serial.o
  .debug_info    0x000000000000079d     0x1139 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_uart.o
@@ -9306,7 +9306,7 @@ LOAD linker stubs
  .debug_info    0x000000000002e788     0x124f Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh.o
  .debug_info    0x000000000002f9d7     0x2b65 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_ble.o
  .debug_info    0x000000000003253c      0x5a9 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
- .debug_info    0x0000000000032ae5     0x23da Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
+ .debug_info    0x0000000000032ae5     0x23e6 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
 .debug_abbrev   0x0000000000000000     0x88fa
  .debug_abbrev  0x0000000000000000       0x12 Output/Release/Obj/ble_app_blinky_pca10040_s132/thumb_crt0.o
@@ -9541,7 +9541,7 @@ LOAD linker stubs
  .debug_str     0x0000000000094d16      0x1a7 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
                                       0x733a4 (size before relaxing)
  .debug_str     0x0000000000094ebd      0x181 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
-                                      0x777dd (size before relaxing)
+                                      0x777e8 (size before relaxing)
 
 .debug_ranges   0x0000000000000000     0x3978
  .debug_ranges  0x0000000000000000       0x90 Output/Release/Obj/ble_app_blinky_pca10040_s132/thumb_crt0.o
@@ -9634,7 +9634,7 @@ LOAD linker stubs
  .debug_frame   0x0000000000003094       0x5c Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
  .debug_frame   0x00000000000030f0      0x110 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
-.debug_loc      0x0000000000000000    0x11a8c
+.debug_loc      0x0000000000000000    0x11aa8
  .debug_loc     0x0000000000000000      0x186 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_serial.o
  .debug_loc     0x0000000000000186      0x2a6 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_uart.o
  .debug_loc     0x000000000000042c       0x31 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_default_backends.o
@@ -9676,7 +9676,7 @@ LOAD linker stubs
  .debug_loc     0x0000000000010fb3      0x2de Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh.o
  .debug_loc     0x0000000000011291      0x2bc Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_ble.o
  .debug_loc     0x000000000001154d       0xbb Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
- .debug_loc     0x0000000000011608      0x484 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
+ .debug_loc     0x0000000000011608      0x4a0 Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
 .debug_pubnames
                 0x0000000000000000     0xeaa5
@@ -9768,7 +9768,7 @@ LOAD linker stubs
                 0x000000000000e6b6      0x3ef Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
 .debug_pubtypes
-                0x0000000000000000     0xa6d1
+                0x0000000000000000     0xa6e0
  .debug_pubtypes
                 0x0000000000000000      0x287 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_serial.o
  .debug_pubtypes
@@ -9854,7 +9854,7 @@ LOAD linker stubs
  .debug_pubtypes
                 0x00000000000098a3      0x210 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_sdh_soc.o
  .debug_pubtypes
-                0x0000000000009ab3      0xc1e Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
+                0x0000000000009ab3      0xc2d Output/Release/Obj/ble_app_blinky_pca10040_s132/canary_ble.o
 
 .debug_macro    0x0000000000000000     0xa9e2
  .debug_macro   0x0000000000000000      0x268 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_serial.o
