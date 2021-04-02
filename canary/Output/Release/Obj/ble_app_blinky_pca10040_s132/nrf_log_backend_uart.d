@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_uart.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_uart.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_uart.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -49,10 +49,10 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_uart.o: \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_types.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_serial.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_serial.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_backend_interface.h \
  ../nRF5SDK1702d674dde/external/fprintf/nrf_fprintf.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_internal.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_internal.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_types.h \
  ../nRF5SDK1702d674dde/integration/nrfx/legacy/nrf_drv_uart.h \
  ../nRF5SDK1702d674dde/modules/nrfx/nrfx.h \

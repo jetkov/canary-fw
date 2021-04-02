@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_log_backend_rtt.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_rtt.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\log\src\nrf_log_backend_rtt.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \

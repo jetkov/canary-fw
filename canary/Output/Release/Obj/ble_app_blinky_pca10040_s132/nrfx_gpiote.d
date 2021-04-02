@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrfx_gpiote.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\modules\nrfx\drivers\src\nrfx_gpiote.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\modules\nrfx\drivers\src\nrfx_gpiote.c \
  ../nRF5SDK1702d674dde/modules/nrfx/nrfx.h \
  ../nRF5SDK1702d674dde/integration/nrfx/nrfx_config.h config/sdk_config.h \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/nrfx_common.h \

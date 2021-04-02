@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/ble_conn_params.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\common\ble_conn_params.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\common\ble_conn_params.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -34,7 +34,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/ble_conn_params.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_hci.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_err.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_error.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\common\ble_conn_params.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\common\ble_conn_params.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_err.h \
@@ -46,12 +46,12 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/ble_conn_params.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_gatts.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\common\ble_srv_common.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\common\ble_srv_common.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_types.h \
  ../nRF5SDK1702d674dde/components/libraries/util/app_util.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_gap.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble_gatt.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\common\ble_conn_state.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\common\ble_conn_state.h \
  ../nRF5SDK1702d674dde/components/libraries/atomic/nrf_atomic.h \
  ../nRF5SDK1702d674dde/components/softdevice/common/nrf_sdh_ble.h \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section_iter.h \

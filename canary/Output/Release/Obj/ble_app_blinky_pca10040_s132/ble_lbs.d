@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/ble_lbs.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\ble_services\ble_lbs\ble_lbs.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\canary\canary_ble_services\ble_lbs.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -29,7 +29,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/ble_lbs.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_macros.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\ble_services\ble_lbs\ble_lbs.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\canary\canary_ble_services\ble_lbs.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_error.h \

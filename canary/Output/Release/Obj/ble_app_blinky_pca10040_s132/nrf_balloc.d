@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_balloc.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\balloc\nrf_balloc.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\balloc\nrf_balloc.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -31,7 +31,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_balloc.o: \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\balloc\nrf_balloc.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\balloc\nrf_balloc.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_errors.h \
  ../nRF5SDK1702d674dde/components/libraries/util/app_util_platform.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_soc.h \

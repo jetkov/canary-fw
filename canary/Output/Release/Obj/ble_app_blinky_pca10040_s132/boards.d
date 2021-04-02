@@ -1,6 +1,6 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/boards.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\boards\boards.c \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\boards\boards.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\boards\boards.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\boards\boards.h \
  ../nRF5SDK1702d674dde/modules/nrfx/hal/nrf_gpio.h \
  ../nRF5SDK1702d674dde/modules/nrfx/nrfx.h \
  ../nRF5SDK1702d674dde/integration/nrfx/nrfx_config.h config/sdk_config.h \
@@ -53,4 +53,4 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/boards.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_sd_def.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_soc.h \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/nrfx_errors.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\boards\pca10040.h
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\boards\pca10040.h

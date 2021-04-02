@@ -1,6 +1,6 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_ringbuf.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\ringbuf\nrf_ringbuf.c \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\ringbuf\nrf_ringbuf.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\ringbuf\nrf_ringbuf.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\ringbuf\nrf_ringbuf.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  ../nRF5SDK1702d674dde/components/libraries/atomic/nrf_atomic.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \

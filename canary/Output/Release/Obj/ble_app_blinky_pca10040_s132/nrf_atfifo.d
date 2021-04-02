@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_atfifo.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo.c \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/string.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/__crossworks.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
@@ -22,7 +22,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_atfifo.o: \
  ../nRF5SDK1702d674dde/modules/nrfx/mdk/compiler_abstraction.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf52/nrf_mbr.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo.h \
  config/sdk_config.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
@@ -31,7 +31,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_atfifo.o: \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_instance.h \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_types.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_os.h \

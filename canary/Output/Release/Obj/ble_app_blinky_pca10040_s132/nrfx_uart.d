@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrfx_uart.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\modules\nrfx\drivers\src\nrfx_uart.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\modules\nrfx\drivers\src\nrfx_uart.c \
  ../nRF5SDK1702d674dde/modules/nrfx/nrfx.h \
  ../nRF5SDK1702d674dde/integration/nrfx/nrfx_config.h config/sdk_config.h \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/nrfx_common.h \
@@ -53,7 +53,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrfx_uart.o: \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/nrfx_errors.h \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/include/nrfx_uart.h \
  ../nRF5SDK1702d674dde/modules/nrfx/hal/nrf_uart.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\modules\nrfx\drivers\src\prs/nrfx_prs.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\modules\nrfx\drivers\src\prs/nrfx_prs.h \
  ../nRF5SDK1702d674dde/modules/nrfx/hal/nrf_gpio.h \
  ../nRF5SDK1702d674dde/integration/nrfx/nrfx_log.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log.h \

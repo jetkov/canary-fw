@@ -1,6 +1,6 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/app_timer2.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\timer\app_timer2.c \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\timer\app_timer.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\timer\app_timer2.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\timer\app_timer.h \
  config/sdk_config.h \
  ../nRF5SDK1702d674dde/components/libraries/util/app_error.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
@@ -69,5 +69,5 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/app_timer2.o: \
  ../nRF5SDK1702d674dde/components/libraries/strerror/nrf_strerror.h \
  ../nRF5SDK1702d674dde/components/libraries/log/src/nrf_log_internal.h \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_types.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\timer\drv_rtc.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\timer\drv_rtc.h \
  ../nRF5SDK1702d674dde/modules/nrfx/hal/nrf_rtc.h

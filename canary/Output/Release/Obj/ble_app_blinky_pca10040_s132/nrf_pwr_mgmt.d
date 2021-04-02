@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_pwr_mgmt.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\pwr_mgmt\nrf_pwr_mgmt.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\pwr_mgmt\nrf_pwr_mgmt.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -29,7 +29,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_pwr_mgmt.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_macros.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\pwr_mgmt\nrf_pwr_mgmt.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\pwr_mgmt\nrf_pwr_mgmt.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_errors.h \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section_iter.h \
  ../nRF5SDK1702d674dde/components/libraries/experimental_section_vars/nrf_section.h \

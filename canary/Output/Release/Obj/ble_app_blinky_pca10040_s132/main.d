@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/main.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\canary_app\main.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\canary\main.c \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/string.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/__crossworks.h \
@@ -90,7 +90,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/main.o: \
  ../nRF5SDK1702d674dde/components/libraries/log/nrf_log_types.h \
  ../nRF5SDK1702d674dde/components/libraries/sortlist/nrf_sortlist.h \
  ../nRF5SDK1702d674dde/components/libraries/button/app_button.h \
- ../nRF5SDK1702d674dde/components/ble/ble_services/ble_lbs/ble_lbs.h \
+ canary_ble_services/canary_ble.h \
  ../nRF5SDK1702d674dde/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
  ../nRF5SDK1702d674dde/components/ble/nrf_ble_qwr/nrf_ble_qwr.h \
  ../nRF5SDK1702d674dde/components/libraries/pwr_mgmt/nrf_pwr_mgmt.h \

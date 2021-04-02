@@ -1,7 +1,7 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_drv_clock.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\integration\nrfx\legacy\nrf_drv_clock.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\integration\nrfx\legacy\nrf_drv_clock.c \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\integration\nrfx\legacy\nrf_drv_clock.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\integration\nrfx\legacy\nrf_drv_clock.h \
  ../nRF5SDK1702d674dde/modules/nrfx/drivers/include/nrfx_clock.h \
  ../nRF5SDK1702d674dde/modules/nrfx/nrfx.h \
  ../nRF5SDK1702d674dde/integration/nrfx/nrfx_config.h config/sdk_config.h \

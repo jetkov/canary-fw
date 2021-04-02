@@ -1,5 +1,5 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_ble_qwr.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\nrf_ble_qwr\nrf_ble_qwr.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\nrf_ble_qwr\nrf_ble_qwr.c \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_ble_qwr.o: \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_macros.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdlib.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\ble\nrf_ble_qwr\nrf_ble_qwr.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\ble\nrf_ble_qwr\nrf_ble_qwr.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/ble.h \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \

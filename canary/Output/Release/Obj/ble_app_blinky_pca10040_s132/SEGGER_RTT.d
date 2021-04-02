@@ -1,7 +1,7 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/SEGGER_RTT.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT.c \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT_Conf.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nordic_common.h \
  ../nRF5SDK1702d674dde/components/libraries/util/app_util_platform.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \

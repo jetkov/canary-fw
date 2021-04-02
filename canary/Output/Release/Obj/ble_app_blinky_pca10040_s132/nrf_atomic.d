@@ -1,6 +1,6 @@
 Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_atomic.o: \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic.c \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic.h \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic.c \
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_common.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdint.h \
  C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42/include/stdbool.h \
@@ -30,4 +30,4 @@ Output/Release/Obj/ble_app_blinky_pca10040_s132/nrf_atomic.o: \
  ../nRF5SDK1702d674dde/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF5SDK1702d674dde/components/libraries/util/sdk_macros.h \
  ../nRF5SDK1702d674dde/components/libraries/util/nrf_assert.h \
- C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\Canary\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic_internal.h
+ C\:\Users\Alex\Documents\SEGGER\ Embedded\ Studio\ for\ ARM\ Projects\canary-fw\nRF5SDK1702d674dde\components\libraries\atomic\nrf_atomic_internal.h
