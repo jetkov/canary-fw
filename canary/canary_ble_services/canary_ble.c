@@ -207,18 +207,26 @@ uint32_t ble_lbs_on_button_change(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8
     return sd_ble_gatts_hvx(conn_handle, &params);
 }
 
-uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data)
+uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint8_t * p_data, uint16_t len)
 {
     ble_gatts_hvx_params_t params;
-    uint16_t len = sizeof(data);
 
     memset(&params, 0, sizeof(params));
     params.type   = BLE_GATT_HVX_NOTIFICATION;
     params.handle = get_canary_uuid_handle(p_lbs, uuid)->value_handle;
-    params.p_data = &data;
+    params.p_data = p_data;
     params.p_len  = &len;
 
     return sd_ble_gatts_hvx(conn_handle, &params);
+}
+
+uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data)
+{
+    uint8_t dataArray[2];
+    dataArray[0] = data & 0xff;
+    dataArray[1] = (data >> 8);
+
+    return ble_canary_notify(conn_handle, p_lbs, uuid, dataArray, 2);
 }
 
 #endif // NRF_MODULE_ENABLED(BLE_LBS)

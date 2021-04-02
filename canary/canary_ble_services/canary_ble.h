@@ -173,6 +173,9 @@ void ble_lbs_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context);
  */
 uint32_t ble_lbs_on_button_change(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t button_state);
 
+uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint8_t * p_data, uint16_t len);
+uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data);
+
 
 #ifdef __cplusplus
 }
