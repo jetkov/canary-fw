@@ -89,33 +89,55 @@ NRF_SDH_BLE_OBSERVER(_name ## _obs,                                             
                      BLE_LBS_BLE_OBSERVER_PRIO,                                                     \
                      ble_lbs_on_ble_evt, &_name)
 
-#define LBS_UUID_BASE        {0x23, 0xD1, 0xBC, 0xEA, 0x5F, 0x78, 0x23, 0x15, \
-                              0xDE, 0xEF, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00}
-#define LBS_UUID_SERVICE     0x1523
-#define LBS_UUID_BUTTON_CHAR 0x1524
-#define LBS_UUID_LED_CHAR    0x1525
+#define CANARY_UUID_BASE         {0x23, 0xD1, 0xBC, 0xEA, 0x5F, 0x78, 0x23, 0x15, \
+                                  0xDE, 0xEF, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00}
 
+#define CANARY_UUID_SERVICE       0x1523
+
+#define CANARY_UUID_BUTTON_CHAR   0x1524
+#define CANARY_UUID_PM1_CHAR      0x1525
+#define CANARY_UUID_PM2_5_CHAR    0x1526
+#define CANARY_UUID_PM10_CHAR     0x1527
+#define CANARY_UUID_VOC_IDX_CHAR  0x1528
+#define CANARY_UUID_GAS_CHAR      0x1529
+#define CANARY_UUID_TEMP_CHAR     0x152A
+#define CANARY_UUID_HUMIDITY_CHAR 0x152B
+#define CANARY_UUID_PM_AQI_CHAR   0x152C
+#define CANARY_UUID_GAS_AQI_CHAR  0x152D
+#define CANARY_UUID_BATTERY_CHAR  0x152E
 
 // Forward declaration of the ble_lbs_t type.
 typedef struct ble_lbs_s ble_lbs_t;
 
-typedef void (*ble_lbs_led_write_handler_t) (uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t new_state);
+//typedef void (*ble_lbs_led_write_handler_t) (uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t new_state);
 
 /** @brief LED Button Service init structure. This structure contains all options and data needed for
  *        initialization of the service.*/
 typedef struct
 {
-    ble_lbs_led_write_handler_t led_write_handler; /**< Event handler to be called when the LED Characteristic is written. */
+    //ble_lbs_led_write_handler_t led_write_handler; /**< Event handler to be called when the LED Characteristic is written. */
 } ble_lbs_init_t;
 
 /**@brief LED Button Service structure. This structure contains various status information for the service. */
 struct ble_lbs_s
 {
     uint16_t                    service_handle;      /**< Handle of LED Button Service (as provided by the BLE stack). */
-    ble_gatts_char_handles_t    led_char_handles;    /**< Handles related to the LED Characteristic. */
+    //ble_gatts_char_handles_t    led_char_handles;    /**< Handles related to the LED Characteristic. */
     ble_gatts_char_handles_t    button_char_handles; /**< Handles related to the Button Characteristic. */
+    
+    ble_gatts_char_handles_t    canary_pm1_char_handles; 
+    ble_gatts_char_handles_t    canary_pm2_5_char_handles;
+    ble_gatts_char_handles_t    canary_pm10_char_handles; 
+    ble_gatts_char_handles_t    canary_voc_idx_char_handles;
+    ble_gatts_char_handles_t    canary_gas_char_handles;
+    ble_gatts_char_handles_t    canary_temp_char_handles;
+    ble_gatts_char_handles_t    canary_humidity_char_handles;
+    ble_gatts_char_handles_t    canary_pm_aqi_char_handles;
+    ble_gatts_char_handles_t    canary_gas_aqi_char_handles; 
+    ble_gatts_char_handles_t    canary_battery_char_handles; 
+
     uint8_t                     uuid_type;           /**< UUID type for the LED Button Service. */
-    ble_lbs_led_write_handler_t led_write_handler;   /**< Event handler to be called when the LED Characteristic is written. */
+    //ble_lbs_led_write_handler_t led_write_handler;   /**< Event handler to be called when the LED Characteristic is written. */
 };
 
 

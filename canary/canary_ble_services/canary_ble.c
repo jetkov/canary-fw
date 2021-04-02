@@ -43,20 +43,56 @@
 #include "ble_srv_common.h"
 
 
-/**@brief Function for handling the Write event.
- *
- * @param[in] p_lbs      LED Button Service structure.
- * @param[in] p_ble_evt  Event received from the BLE stack.
- */
-static void on_write(ble_lbs_t * p_lbs, ble_evt_t const * p_ble_evt)
-{
-    ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+///**@brief Function for handling the Write event.
+// *
+// * @param[in] p_lbs      LED Button Service structure.
+// * @param[in] p_ble_evt  Event received from the BLE stack.
+// */
+//static void on_write(ble_lbs_t * p_lbs, ble_evt_t const * p_ble_evt)
+//{
+//    ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
 
-    if (   (p_evt_write->handle == p_lbs->led_char_handles.value_handle)
-        && (p_evt_write->len == 1)
-        && (p_lbs->led_write_handler != NULL))
+//    if (   (p_evt_write->handle == p_lbs->led_char_handles.value_handle)
+//        && (p_evt_write->len == 1)
+//        && (p_lbs->led_write_handler != NULL))
+//    {
+//        p_lbs->led_write_handler(p_ble_evt->evt.gap_evt.conn_handle, p_lbs, p_evt_write->data[0]);
+//    }
+//}
+
+ble_gatts_char_handles_t * get_canary_uuid_handle(ble_lbs_t * p_lbs, uint16_t uuid) {
+    switch(uuid)
     {
-        p_lbs->led_write_handler(p_ble_evt->evt.gap_evt.conn_handle, p_lbs, p_evt_write->data[0]);
+        case CANARY_UUID_PM1_CHAR:
+            return &p_lbs->canary_pm1_char_handles;
+            break;
+        case CANARY_UUID_PM2_5_CHAR:
+            return &p_lbs->canary_pm2_5_char_handles;
+            break;
+        case CANARY_UUID_PM10_CHAR:
+            return &p_lbs->canary_pm10_char_handles;
+            break;
+        case CANARY_UUID_VOC_IDX_CHAR:
+            return &p_lbs->canary_voc_idx_char_handles;
+            break;
+        case CANARY_UUID_GAS_CHAR:
+            return &p_lbs->canary_gas_char_handles;
+            break;
+        case CANARY_UUID_TEMP_CHAR:
+            return &p_lbs->canary_temp_char_handles;
+            break;
+        case CANARY_UUID_HUMIDITY_CHAR:
+            return &p_lbs->canary_humidity_char_handles;
+            break;
+        case CANARY_UUID_PM_AQI_CHAR:
+            return &p_lbs->canary_pm_aqi_char_handles;
+            break;
+        case CANARY_UUID_GAS_AQI_CHAR:
+            return &p_lbs->canary_gas_aqi_char_handles;
+            break;
+        case CANARY_UUID_BATTERY_CHAR:
+            return &p_lbs->canary_battery_char_handles;
+            break;
     }
 }
 
@@ -67,9 +103,9 @@ void ble_lbs_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context)
 
     switch (p_ble_evt->header.evt_id)
     {
-        case BLE_GATTS_EVT_WRITE:
-            on_write(p_lbs, p_ble_evt);
-            break;
+        //case BLE_GATTS_EVT_WRITE:
+        //    on_write(p_lbs, p_ble_evt);
+        //    break;
 
         default:
             // No implementation needed.
@@ -84,23 +120,23 @@ uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init)
     ble_uuid_t            ble_uuid;
     ble_add_char_params_t add_char_params;
 
-    // Initialize service structure.
-    p_lbs->led_write_handler = p_lbs_init->led_write_handler;
+    //// Initialize service structure.
+    //p_lbs->led_write_handler = p_lbs_init->led_write_handler;
 
     // Add service.
-    ble_uuid128_t base_uuid = {LBS_UUID_BASE};
+    ble_uuid128_t base_uuid = {CANARY_UUID_BASE};
     err_code = sd_ble_uuid_vs_add(&base_uuid, &p_lbs->uuid_type);
     VERIFY_SUCCESS(err_code);
 
     ble_uuid.type = p_lbs->uuid_type;
-    ble_uuid.uuid = LBS_UUID_SERVICE;
+    ble_uuid.uuid = CANARY_UUID_SERVICE;
 
     err_code = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &ble_uuid, &p_lbs->service_handle);
     VERIFY_SUCCESS(err_code);
 
     // Add Button characteristic.
     memset(&add_char_params, 0, sizeof(add_char_params));
-    add_char_params.uuid              = LBS_UUID_BUTTON_CHAR;
+    add_char_params.uuid              = CANARY_UUID_BUTTON_CHAR;
     add_char_params.uuid_type         = p_lbs->uuid_type;
     add_char_params.init_len          = sizeof(uint8_t);
     add_char_params.max_len           = sizeof(uint8_t);
@@ -118,19 +154,42 @@ uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init)
         return err_code;
     }
 
-    // Add LED characteristic.
-    memset(&add_char_params, 0, sizeof(add_char_params));
-    add_char_params.uuid             = LBS_UUID_LED_CHAR;
-    add_char_params.uuid_type        = p_lbs->uuid_type;
-    add_char_params.init_len         = sizeof(uint8_t);
-    add_char_params.max_len          = sizeof(uint8_t);
-    add_char_params.char_props.read  = 1;
-    add_char_params.char_props.write = 1;
+    // Add Canary sensor characteristics.
+    for (uint16_t sensor_char_uuid = CANARY_UUID_PM1_CHAR; sensor_char_uuid <= CANARY_UUID_BATTERY_CHAR; sensor_char_uuid++) {
+      memset(&add_char_params, 0, sizeof(add_char_params));
+      add_char_params.uuid              = sensor_char_uuid;
+      add_char_params.uuid_type         = p_lbs->uuid_type;
+      add_char_params.init_len          = sizeof(uint16_t);
+      add_char_params.max_len           = sizeof(uint16_t);
+      add_char_params.char_props.read   = 1;
+      add_char_params.char_props.notify = 1;
 
-    add_char_params.read_access  = SEC_OPEN;
-    add_char_params.write_access = SEC_OPEN;
+      add_char_params.read_access       = SEC_OPEN;
+      add_char_params.cccd_write_access = SEC_OPEN;
 
-    return characteristic_add(p_lbs->service_handle, &add_char_params, &p_lbs->led_char_handles);
+      err_code = characteristic_add(p_lbs->service_handle,
+                                    &add_char_params,
+                                    get_canary_uuid_handle(p_lbs, sensor_char_uuid));
+      
+      if (err_code != NRF_SUCCESS)
+      {
+          return err_code;
+      }
+    }
+
+    //// Add LED characteristic.
+    //memset(&add_char_params, 0, sizeof(add_char_params));
+    //add_char_params.uuid             = LBS_UUID_LED_CHAR;
+    //add_char_params.uuid_type        = p_lbs->uuid_type;
+    //add_char_params.init_len         = sizeof(uint8_t);
+    //add_char_params.max_len          = sizeof(uint8_t);
+    //add_char_params.char_props.read  = 1;
+    //add_char_params.char_props.write = 1;
+
+    //add_char_params.read_access  = SEC_OPEN;
+    //add_char_params.write_access = SEC_OPEN;
+
+    //return characteristic_add(p_lbs->service_handle, &add_char_params, &p_lbs->led_char_handles);
 }
 
 
@@ -147,4 +206,19 @@ uint32_t ble_lbs_on_button_change(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8
 
     return sd_ble_gatts_hvx(conn_handle, &params);
 }
+
+uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data)
+{
+    ble_gatts_hvx_params_t params;
+    uint16_t len = sizeof(data);
+
+    memset(&params, 0, sizeof(params));
+    params.type   = BLE_GATT_HVX_NOTIFICATION;
+    params.handle = get_canary_uuid_handle(p_lbs, uuid)->value_handle;
+    params.p_data = &data;
+    params.p_len  = &len;
+
+    return sd_ble_gatts_hvx(conn_handle, &params);
+}
+
 #endif // NRF_MODULE_ENABLED(BLE_LBS)

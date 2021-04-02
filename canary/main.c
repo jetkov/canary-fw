@@ -212,7 +212,7 @@ static void advertising_init(void)
     ble_advdata_t advdata;
     ble_advdata_t srdata;
 
-    ble_uuid_t adv_uuids[] = {{LBS_UUID_SERVICE, m_lbs.uuid_type}};
+    ble_uuid_t adv_uuids[] = {{CANARY_UUID_SERVICE, m_lbs.uuid_type}};
 
     // Build and set advertising data.
     memset(&advdata, 0, sizeof(advdata));
@@ -262,24 +262,24 @@ static void nrf_qwr_error_handler(uint32_t nrf_error)
 }
 
 
-/**@brief Function for handling write events to the LED characteristic.
- *
- * @param[in] p_lbs     Instance of LED Button Service to which the write applies.
- * @param[in] led_state Written/desired state of the LED.
- */
-static void led_write_handler(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t led_state)
-{
-    if (led_state)
-    {
-        bsp_board_led_on(LEDBUTTON_LED);
-        NRF_LOG_INFO("Received LED ON!");
-    }
-    else
-    {
-        bsp_board_led_off(LEDBUTTON_LED);
-        NRF_LOG_INFO("Received LED OFF!");
-    }
-}
+///**@brief Function for handling write events to the LED characteristic.
+// *
+// * @param[in] p_lbs     Instance of LED Button Service to which the write applies.
+// * @param[in] led_state Written/desired state of the LED.
+// */
+//static void led_write_handler(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t led_state)
+//{
+//    if (led_state)
+//    {
+//        bsp_board_led_on(LEDBUTTON_LED);
+//        NRF_LOG_INFO("Received LED ON!");
+//    }
+//    else
+//    {
+//        bsp_board_led_off(LEDBUTTON_LED);
+//        NRF_LOG_INFO("Received LED OFF!");
+//    }
+//}
 
 
 /**@brief Function for initializing services that will be used by the application.
@@ -297,7 +297,7 @@ static void services_init(void)
     APP_ERROR_CHECK(err_code);
 
     // Initialize LBS.
-    init.led_write_handler = led_write_handler;
+    //init.led_write_handler = led_write_handler;
 
     err_code = ble_lbs_init(&m_lbs, &init);
     APP_ERROR_CHECK(err_code);
@@ -501,6 +501,22 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
             {
                 APP_ERROR_CHECK(err_code);
             }
+
+            // SEND CANARY DUMMY DATA
+            for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
+
+                err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid);
+        
+                if (err_code != NRF_SUCCESS &&
+                    err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
+                    err_code != NRF_ERROR_INVALID_STATE &&
+                    err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+                {
+                    APP_ERROR_CHECK(err_code);
+                }
+  
+            }
+
             break;
 
         default:
