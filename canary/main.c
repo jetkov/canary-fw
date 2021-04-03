@@ -108,7 +108,7 @@ static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];                    
 static uint8_t m_enc_scan_response_data[BLE_GAP_ADV_SET_DATA_SIZE_MAX];         /**< Buffer for storing an encoded scan data. */
 
 static volatile uint8_t hvn_tx_complete_flag = 0;
-static volatile send_sensor_data_flag = 0;
+static volatile uint8_t send_sensor_data_flag = 0;
 
 /**@brief Struct that contains pointers to the encoded advertising data. */
 static ble_gap_adv_data_t m_adv_data =
