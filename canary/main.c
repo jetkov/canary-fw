@@ -43,6 +43,9 @@
  * This file contains the source code for a sample server application using the LED Button service.
  */
 
+#define NRF_LOG_DEFAULT_LEVEL           4
+#define NRF_SDH_BLE_GAP_EVENT_LENGTH    24
+
 #include <stdint.h>
 #include <string.h>
 #include "nordic_common.h"
@@ -67,7 +70,6 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-
 
 #define ADVERTISING_LED                 BSP_BOARD_LED_0                         /**< Is on when device is advertising. */
 #define CONNECTED_LED                   BSP_BOARD_LED_1                         /**< Is on when device has connected. */
