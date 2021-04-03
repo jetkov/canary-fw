@@ -7743,7 +7743,7 @@
 // <4=> Debug 
 
 #ifndef NRF_LOG_DEFAULT_LEVEL
-#define NRF_LOG_DEFAULT_LEVEL 3
+#define NRF_LOG_DEFAULT_LEVEL 4
 #endif
 
 // <q> NRF_LOG_DEFERRED  - Enable deffered logger.
@@ -11361,7 +11361,7 @@
 // <i> The time set aside for this connection on every connection interval in 1.25 ms units.
 
 #ifndef NRF_SDH_BLE_GAP_EVENT_LENGTH
-#define NRF_SDH_BLE_GAP_EVENT_LENGTH 6
+#define NRF_SDH_BLE_GAP_EVENT_LENGTH 24
 #endif
 
 // <o> NRF_SDH_BLE_GATT_MAX_MTU_SIZE - Static maximum MTU size. 
@@ -11376,7 +11376,7 @@
 
 // <o> NRF_SDH_BLE_VS_UUID_COUNT - The number of vendor-specific UUIDs. 
 #ifndef NRF_SDH_BLE_VS_UUID_COUNT
-#define NRF_SDH_BLE_VS_UUID_COUNT 10
+#define NRF_SDH_BLE_VS_UUID_COUNT 16
 #endif
 
 // <q> NRF_SDH_BLE_SERVICE_CHANGED  - Include the Service Changed characteristic in the Attribute Table.

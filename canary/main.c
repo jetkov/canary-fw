@@ -107,6 +107,9 @@ static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET;                   
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];                    /**< Buffer for storing an encoded advertising set. */
 static uint8_t m_enc_scan_response_data[BLE_GAP_ADV_SET_DATA_SIZE_MAX];         /**< Buffer for storing an encoded scan data. */
 
+static volatile uint8_t hvn_tx_complete_flag = 0;
+static volatile send_sensor_data_flag = 0;
+
 /**@brief Struct that contains pointers to the encoded advertising data. */
 static ble_gap_adv_data_t m_adv_data =
 {
@@ -425,6 +428,10 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             APP_ERROR_CHECK(err_code);
         } break;
 
+        case BLE_GATTS_EVT_HVN_TX_COMPLETE:
+            hvn_tx_complete_flag = 1;
+            NRF_LOG_DEBUG("BLE_GATTS_EVT_HVN_TX_COMPLETE");
+
         case BLE_GATTS_EVT_SYS_ATTR_MISSING:
             // No system attributes have been stored.
             err_code = sd_ble_gatts_sys_attr_set(m_conn_handle, NULL, 0, 0);
@@ -495,28 +502,18 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
             NRF_LOG_INFO("Send button state change.");
             err_code = ble_lbs_on_button_change(m_conn_handle, &m_lbs, button_action);
             if (err_code != NRF_SUCCESS &&
-                err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
-                err_code != NRF_ERROR_INVALID_STATE &&
-                err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-
-            // SEND CANARY DUMMY DATA
-            for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
-
-                err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid);
-        
-                if (err_code != NRF_SUCCESS &&
                     err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
                     err_code != NRF_ERROR_INVALID_STATE &&
                     err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
                 {
+                    if (err_code == NRF_ERROR_RESOURCES)
+                    {
+                        NRF_LOG_ERROR("Notification queue not big enough!");
+                    }
                     APP_ERROR_CHECK(err_code);
-                }
-  
             }
 
+            send_sensor_data_flag |= button_action;
             break;
 
         default:
@@ -600,6 +597,32 @@ int main(void)
     // Enter main loop.
     for (;;)
     {
+        ret_code_t err_code;
+
+        // SEND CANARY DUMMY DATA
+        for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; send_sensor_data_flag && char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
+
+            //while (hvn_tx_complete_flag == 0) {};
+            //hvn_tx_complete_flag = 0;
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid);
+
+            if (err_code != NRF_SUCCESS &&
+                err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
+                err_code != NRF_ERROR_INVALID_STATE &&
+                err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+            {
+                if (err_code == NRF_ERROR_RESOURCES)
+                {
+                    NRF_LOG_ERROR("Notification queue not big enough!");
+                }
+                APP_ERROR_CHECK(err_code);
+            }
+
+        }
+
+        send_sensor_data_flag = 0;
+
         idle_state_handle();
     }
 }

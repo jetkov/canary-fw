@@ -1,4 +1,4 @@
 nRF5SDK1702d674dde/examples/
-canary/Output/
+**/Output/**
 *.png
 *.mp4

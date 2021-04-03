@@ -42,6 +42,12 @@
 #include "canary_ble.h"
 #include "ble_srv_common.h"
 
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
+
+#include "nrf_delay.h"
+
 
 ///**@brief Function for handling the Write event.
 // *
@@ -211,6 +217,9 @@ uint32_t ble_lbs_on_button_change(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8
 
 uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint8_t * p_data, uint16_t len)
 {
+    ret_code_t err_code;
+    uint8_t retry_counter = 0;
+
     ble_gatts_hvx_params_t params;
 
     memset(&params, 0, sizeof(params));
@@ -219,7 +228,19 @@ uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uui
     params.p_data = p_data;
     params.p_len  = &len;
 
-    return sd_ble_gatts_hvx(conn_handle, &params);
+    do 
+    {
+        err_code = sd_ble_gatts_hvx(conn_handle, &params);
+        retry_counter++;
+
+        if (err_code == NRF_ERROR_RESOURCES)
+        {
+            NRF_LOG_WARNING("Notification queue full! Retrying... %d", retry_counter);
+            nrf_delay_ms(1000);
+        }
+    } while (err_code == NRF_ERROR_RESOURCES && retry_counter < 10);
+
+    return err_code;
 }
 
 uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data)
