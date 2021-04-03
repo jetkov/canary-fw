@@ -45,6 +45,7 @@
 
 #define NRF_LOG_DEFAULT_LEVEL           4
 #define NRF_SDH_BLE_GAP_EVENT_LENGTH    24
+#define NRF_SDH_BLE_VS_UUID_COUNT       16
 
 #include <stdint.h>
 #include <string.h>
