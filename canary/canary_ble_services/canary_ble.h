@@ -122,9 +122,8 @@ typedef struct
 struct ble_lbs_s
 {
     uint16_t                    service_handle;      /**< Handle of LED Button Service (as provided by the BLE stack). */
-    //ble_gatts_char_handles_t    led_char_handles;    /**< Handles related to the LED Characteristic. */
-    ble_gatts_char_handles_t    button_char_handles; /**< Handles related to the Button Characteristic. */
-    
+
+    ble_gatts_char_handles_t    canary_button_char_handles; /**< Handles related to the Button Characteristic. */
     ble_gatts_char_handles_t    canary_pm1_char_handles; 
     ble_gatts_char_handles_t    canary_pm2_5_char_handles;
     ble_gatts_char_handles_t    canary_pm10_char_handles; 
@@ -152,7 +151,6 @@ struct ble_lbs_s
  */
 uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init);
 
-
 /**@brief Function for handling the application's BLE stack events.
  *
  * @details This function handles all events from the BLE stack that are of interest to the LED Button Service.
@@ -161,17 +159,6 @@ uint32_t ble_lbs_init(ble_lbs_t * p_lbs, const ble_lbs_init_t * p_lbs_init);
  * @param[in] p_context  LED Button Service structure.
  */
 void ble_lbs_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context);
-
-
-/**@brief Function for sending a button state notification.
- *
- ' @param[in] conn_handle   Handle of the peripheral connection to which the button state notification will be sent.
- * @param[in] p_lbs         LED Button Service structure.
- * @param[in] button_state  New button state.
- *
- * @retval NRF_SUCCESS If the notification was sent successfully. Otherwise, an error code is returned.
- */
-uint32_t ble_lbs_on_button_change(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t button_state);
 
 uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint8_t * p_data, uint16_t len);
 uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uuid, uint16_t data);

@@ -1,6 +1,6 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="ble_app_blinky_pca10040_s132" target="8" version="2">
-  <project Name="ble_app_blinky_pca10040_s132">
+<solution Name="canary_pca10040_s132" target="8" version="2">
+  <project Name="canary_pca10040_s132">
     <configuration
       Name="Common"
       arm_architecture="v7EM"

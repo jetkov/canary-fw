@@ -1,9 +1,9 @@
 <!DOCTYPE CrossStudio_Project_File>
 <solution
-  Name="ble_app_hrs_nfc_pairing_pca10100_s113"
+  Name="canary_pca10100_s113"
   target="8"
   version="2">
-  <project Name="ble_app_hrs_nfc_pairing_pca10100_s113">
+  <project Name="canary_pca10100_s113">
     <configuration
       Name="Common"
       arm_architecture="v7EM"
