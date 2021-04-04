@@ -67,6 +67,9 @@
 #include "nrf_ble_gatt.h"
 #include "nrf_ble_qwr.h"
 #include "nrf_pwr_mgmt.h"
+#include "app_uart.h"
+#include "nrf_uart.h"
+#include "nrf_delay.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -99,6 +102,10 @@
 
 #define DEAD_BEEF                       0xDEADBEEF                              /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 
+#define UART_TX_BUF_SIZE 256                                                    /**< UART TX buffer size. */
+#define UART_RX_BUF_SIZE 256                                                    /**< UART RX buffer size. */
+
+#define UART_HWFC APP_UART_FLOW_CONTROL_DISABLED
 
 BLE_LBS_DEF(m_lbs);                                                             /**< LED Button Service instance. */
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
@@ -143,6 +150,43 @@ static ble_gap_adv_data_t m_adv_data =
 void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 {
     app_error_handler(DEAD_BEEF, line_num, p_file_name);
+}
+
+void uart_error_handle(app_uart_evt_t * p_event)
+{
+    if (p_event->evt_type == APP_UART_COMMUNICATION_ERROR)
+    {
+        APP_ERROR_HANDLER(p_event->data.error_communication);
+    }
+    else if (p_event->evt_type == APP_UART_FIFO_ERROR)
+    {
+        APP_ERROR_HANDLER(p_event->data.error_code);
+    }
+}
+
+static void uart_init(void)
+{
+    ret_code_t err_code;
+
+    const app_uart_comm_params_t comm_params =
+      {
+          RX_PIN_NUMBER,
+          TX_PIN_NUMBER,
+          RTS_PIN_NUMBER,
+          CTS_PIN_NUMBER,
+          UART_HWFC,
+          false,
+          NRF_UART_BAUDRATE_9600
+      };
+
+    APP_UART_FIFO_INIT(&comm_params,
+                       UART_RX_BUF_SIZE,
+                       UART_TX_BUF_SIZE,
+                       uart_error_handle,
+                       APP_IRQ_PRIORITY_LOWEST,
+                       err_code);
+
+    APP_ERROR_CHECK(err_code);
 }
 
 
@@ -585,6 +629,7 @@ int main(void)
     leds_init();
     timers_init();
     buttons_init();
+    uart_init();
     power_management_init();
     ble_stack_init();
     gap_params_init();

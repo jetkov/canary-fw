@@ -49,22 +49,22 @@
 #include "nrf_delay.h"
 
 
-///**@brief Function for handling the Write event.
-// *
-// * @param[in] p_lbs      LED Button Service structure.
-// * @param[in] p_ble_evt  Event received from the BLE stack.
-// */
-//static void on_write(ble_lbs_t * p_lbs, ble_evt_t const * p_ble_evt)
-//{
-//    ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+/**@brief Function for handling the Write event.
+ *
+ * @param[in] p_lbs      LED Button Service structure.
+ * @param[in] p_ble_evt  Event received from the BLE stack.
+ */
+static void on_write(ble_lbs_t * p_lbs, ble_evt_t const * p_ble_evt)
+{
+    //ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
 
-//    if (   (p_evt_write->handle == p_lbs->led_char_handles.value_handle)
-//        && (p_evt_write->len == 1)
-//        && (p_lbs->led_write_handler != NULL))
-//    {
-//        p_lbs->led_write_handler(p_ble_evt->evt.gap_evt.conn_handle, p_lbs, p_evt_write->data[0]);
-//    }
-//}
+    //if (   (p_evt_write->handle == p_lbs->led_char_handles.value_handle)
+    //    && (p_evt_write->len == 1)
+    //    && (p_lbs->led_write_handler != NULL))
+    //{
+    //    p_lbs->led_write_handler(p_ble_evt->evt.gap_evt.conn_handle, p_lbs, p_evt_write->data[0]);
+    //}
+}
 
 ble_gatts_char_handles_t * get_canary_uuid_handle(ble_lbs_t * p_lbs, uint16_t uuid) {
     switch(uuid)
@@ -113,7 +113,7 @@ void ble_lbs_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context)
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GATTS_EVT_WRITE:
-//            on_write(p_lbs, p_ble_evt);
+            on_write(p_lbs, p_ble_evt);
             break;
 
         default:
