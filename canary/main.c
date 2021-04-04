@@ -473,7 +473,7 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
         case BLE_GATTS_EVT_HVN_TX_COMPLETE:
             hvn_tx_complete_flag = 1;
-            NRF_LOG_DEBUG("BLE_GATTS_EVT_HVN_TX_COMPLETE");
+            //NRF_LOG_DEBUG("BLE_GATTS_EVT_HVN_TX_COMPLETE");
 
         case BLE_GATTS_EVT_SYS_ATTR_MISSING:
             // No system attributes have been stored.
@@ -601,8 +601,20 @@ static void idle_state_handle(void)
     }
 }
 
-
-
+static void handle_notification_error(ret_code_t err_code)
+{
+    if (err_code != NRF_SUCCESS &&
+        err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
+        err_code != NRF_ERROR_INVALID_STATE &&
+        err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+    {
+        if (err_code == NRF_ERROR_RESOURCES)
+        {
+            NRF_LOG_ERROR("Notification queue not big enough!");
+        }
+        APP_ERROR_CHECK(err_code);
+    }
+}
 
 /**@brief Function for application main entry.
  */
@@ -635,49 +647,58 @@ int main(void)
 
         if (sense_flag == 1)
         {
-            // SEND CANARY DUMMY DATA
-            for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; button_state_send_flag && char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      1 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(20);    
 
-              err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid - counterthing);
-              nrf_delay_ms(10);
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    2 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(20);    
 
-              if (err_code != NRF_SUCCESS &&
-                  err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
-                  err_code != NRF_ERROR_INVALID_STATE &&
-                  err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-              {
-                  if (err_code == NRF_ERROR_RESOURCES)
-                  {
-                      NRF_LOG_ERROR("Notification queue not big enough!");
-                  }
-                  APP_ERROR_CHECK(err_code);
-              }
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     3 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(20);        
 
-            }
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  4 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      5 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     6 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 7 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   0 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(20);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  8 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  9 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(20);   
 
             sense_flag = 0;
             counterthing++;
         }
 
-        //if (button_state_send_flag != 0xFF) 
-        //{
-        //    NRF_LOG_INFO("Send button state change.");
-        //    err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
-            
-        //    if (err_code != NRF_SUCCESS &&
-        //        err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
-        //        err_code != NRF_ERROR_INVALID_STATE &&
-        //        err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-        //    {
-        //        if (err_code == NRF_ERROR_RESOURCES)
-        //        {
-        //            NRF_LOG_ERROR("Notification queue not big enough!");
-        //        }
-        //        APP_ERROR_CHECK(err_code);
-        //    }
+        if (button_state_send_flag != 0xFF) 
+        {
+            NRF_LOG_INFO("Send button state change.");
+            err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
+            handle_notification_error(err_code);
 
-        //    button_state_send_flag = 0xFF;
-        //}
+            button_state_send_flag = 0xFF;
+        }
 
         idle_state_handle();
     }
