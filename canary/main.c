@@ -63,8 +63,11 @@
 #include "nrf_ble_gatt.h"
 #include "nrf_ble_qwr.h"
 #include "nrf_pwr_mgmt.h"
-#include "nrf_libuarte_async.h"
+
+#include "nrf_libuarte_drv.h"
+//#include "nrf_libuarte_async.h"
 #include "nrf_queue.h"
+
 #include "nrf_delay.h"
 #include "nrf_drv_clock.h"
 
@@ -98,6 +101,7 @@
 #define BUTTON_DETECTION_DELAY          APP_TIMER_TICKS(50)                     /**< Delay from a GPIOTE event until a button is reported as pushed (in number of timer ticks). */
 
 #define DEAD_BEEF                       0xDEADBEEF                              /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
+#define NOT_CONNECTED                   0xFFFFFFFF
 
 BLE_LBS_DEF(m_lbs);                                                             /**< LED Button Service instance. */
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
@@ -108,8 +112,9 @@ typedef struct {
     uint32_t length;
 } buffer_t;
 
-NRF_LIBUARTE_ASYNC_DEFINE(libuarte, 0, 1, 0, NRF_LIBUARTE_PERIPHERAL_NOT_USED, 255, 3);
-NRF_QUEUE_DEF(buffer_t, m_buf_queue, 10, NRF_QUEUE_MODE_NO_OVERFLOW);
+NRF_LIBUARTE_DRV_DEFINE(libuarte, 0, 1);
+//NRF_LIBUARTE_ASYNC_DEFINE(libuarte, 0, 1, 0, NRF_LIBUARTE_PERIPHERAL_NOT_USED, 255, 3);
+NRF_QUEUE_DEF(buffer_t, m_uarte_buf_queue, 10, NRF_QUEUE_MODE_NO_OVERFLOW);
 
 APP_TIMER_DEF(m_sense_timer_id);
 
@@ -154,50 +159,104 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
     app_error_handler(DEAD_BEEF, line_num, p_file_name);
 }
 
-void uart_event_handler(void * context, nrf_libuarte_async_evt_t * p_evt)
+void uart_event_handler(void * context, nrf_libuarte_drv_evt_t * p_evt)
 {
-    nrf_libuarte_async_t * p_libuarte = (nrf_libuarte_async_t *)context;
+
+    nrf_libuarte_drv_t * p_libuarte = (nrf_libuarte_drv_t *)context;
     ret_code_t ret;
 
     switch (p_evt->type)
     {
-        case NRF_LIBUARTE_ASYNC_EVT_ERROR:
-            //bsp_board_led_invert(0);
+        case NRF_LIBUARTE_DRV_EVT_RX_DATA:        ///< Data received.
             break;
-        case NRF_LIBUARTE_ASYNC_EVT_RX_DATA:;
-            //buffer_t buf = {
-            //    .p_data = p_evt->data.rxtx.p_data,
-            //    .length = p_evt->data.rxtx.length,
-            //};
+        case NRF_LIBUARTE_DRV_EVT_RX_BUF_REQ:     ///< Requesting new buffer for receiving data.
+            break;
+        case NRF_LIBUARTE_DRV_EVT_TX_DONE:        ///< Requested TX transfer completed.
+            break;
+        case NRF_LIBUARTE_DRV_EVT_ERROR:          ///< Error reported by the UARTE peripheral.
+            break;
+        case NRF_LIBUARTE_DRV_EVT_OVERRUN_ERROR:  ///< Error reported by the driver.
+            break;
 
-            //ret = nrf_queue_push(&m_buf_queue, &buf);
-            //APP_ERROR_CHECK(ret);
+        //case NRF_LIBUARTE_ASYNC_EVT_ERROR:
+        //    //bsp_board_led_invert(0);
+        //    break;
+        //case NRF_LIBUARTE_ASYNC_EVT_RX_DATA:;
+        //    //buffer_t buf = {
+        //    //    .p_data = p_evt->data.rxtx.p_data,
+        //    //    .length = p_evt->data.rxtx.length,
+        //    //};
 
-            break;
-        case NRF_LIBUARTE_ASYNC_EVT_TX_DONE:
-            break;
-        default:
-            break;
+        //    //ret = nrf_queue_push(&m_uarte_buf_queue, &buf);
+        //    //APP_ERROR_CHECK(ret);
+
+        //    break;
+        //case NRF_LIBUARTE_ASYNC_EVT_TX_DONE:
+        //    break;
+        //default:
+        //    break;
     }
+
+//    nrf_libuarte_async_t * p_libuarte = (nrf_libuarte_async_t *)context;
+//    ret_code_t ret;
+
+//    switch (p_evt->type)
+//    {
+//        case NRF_LIBUARTE_ASYNC_EVT_ERROR:
+//            //bsp_board_led_invert(0);
+//            break;
+//        case NRF_LIBUARTE_ASYNC_EVT_RX_DATA:;
+//            //buffer_t buf = {
+//            //    .p_data = p_evt->data.rxtx.p_data,
+//            //    .length = p_evt->data.rxtx.length,
+//            //};
+
+//            //ret = nrf_queue_push(&m_uarte_buf_queue, &buf);
+//            //APP_ERROR_CHECK(ret);
+
+//            break;
+//        case NRF_LIBUARTE_ASYNC_EVT_TX_DONE:
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 static void uart_init(void)
 {
     ret_code_t err_code;
 
-    nrf_libuarte_async_config_t nrf_libuarte_async_config = {
-            .tx_pin     = TX_PIN_NUMBER,
-            .rx_pin     = RX_PIN_NUMBER,
-            .baudrate   = NRF_UARTE_BAUDRATE_9600,
-            .parity     = NRF_UARTE_PARITY_EXCLUDED,
-            .hwfc       = NRF_UARTE_HWFC_DISABLED,
-            .timeout_us = 100,
-            .int_prio   = APP_IRQ_PRIORITY_LOW_MID
+    nrf_libuarte_drv_config_t nrf_libuarte_drv_config = {
+            .tx_pin        = TX_PIN_NUMBER,
+            .rx_pin        = RX_PIN_NUMBER,
+            .cts_pin       = NOT_CONNECTED,
+            .rts_pin       = NOT_CONNECTED,
+            .startrx_evt   = 0,
+            .endrx_evt     = 0,
+            .rxstarted_tsk = 0,
+            .rxdone_tsk    = 0,
+            .hwfc          = NRF_UARTE_HWFC_DISABLED,                           
+            .parity        = NRF_UARTE_PARITY_EXCLUDED,
+            .baudrate      = NRF_UARTE_BAUDRATE_9600,
+            .irq_priority  = APP_IRQ_PRIORITY_LOW_MID,
+            .pullup_rx     = 0
     };
 
-    err_code = nrf_libuarte_async_init(&libuarte, &nrf_libuarte_async_config, uart_event_handler, (void *)&libuarte);
-    
+    nrf_libuarte_drv_init(&libuarte, &nrf_libuarte_drv_config, uart_event_handler, (void *)&libuarte);
     APP_ERROR_CHECK(err_code);
+
+    //nrf_libuarte_async_config_t nrf_libuarte_async_config = {
+    //        .tx_pin     = TX_PIN_NUMBER,
+    //        .rx_pin     = RX_PIN_NUMBER,
+    //        .baudrate   = NRF_UARTE_BAUDRATE_9600,
+    //        .parity     = NRF_UARTE_PARITY_EXCLUDED,
+    //        .hwfc       = NRF_UARTE_HWFC_DISABLED,
+    //        .timeout_us = 100,
+    //        .int_prio   = APP_IRQ_PRIORITY_LOW_MID
+    //};
+
+    //err_code = nrf_libuarte_async_init(&libuarte, &nrf_libuarte_async_config, uart_event_handler, (void *)&libuarte);
+    //APP_ERROR_CHECK(err_code);
 }
 
 
@@ -639,7 +698,7 @@ int main(void)
     leds_init();
     timers_init();
     buttons_init();
-    uart_init();
+    //uart_init();
     power_management_init();
     ble_stack_init();
     gap_params_init();
