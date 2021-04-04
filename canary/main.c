@@ -44,7 +44,7 @@
  */
 
 #define NRF_LOG_DEFAULT_LEVEL           4
-#define NRF_SDH_BLE_GAP_EVENT_LENGTH    24
+#define NRF_SDH_BLE_GAP_EVENT_LENGTH    256
 #define NRF_SDH_BLE_VS_UUID_COUNT       16
 
 #include <stdint.h>
@@ -639,6 +639,7 @@ int main(void)
             for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; button_state_send_flag && char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
 
               err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid - counterthing);
+              nrf_delay_ms(10);
 
               if (err_code != NRF_SUCCESS &&
                   err_code != BLE_ERROR_INVALID_CONN_HANDLE &&

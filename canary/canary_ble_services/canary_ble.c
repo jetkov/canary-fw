@@ -189,7 +189,7 @@ uint32_t ble_canary_notify(uint16_t conn_handle, ble_lbs_t * p_lbs, uint16_t uui
         if (err_code == NRF_ERROR_RESOURCES)
         {
             NRF_LOG_WARNING("Notification queue full! Retrying... %d", retry_counter);
-            nrf_delay_ms(20);
+            nrf_delay_ms(50);
         }
     } while (err_code == NRF_ERROR_RESOURCES && retry_counter < 10);
 
