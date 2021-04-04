@@ -111,6 +111,8 @@ BLE_LBS_DEF(m_lbs);                                                             
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
 NRF_BLE_QWR_DEF(m_qwr);                                                         /**< Context for the Queued Write module.*/
 
+APP_TIMER_DEF(m_sense_timer_id);
+
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                        /**< Handle of the current connection. */
 
 static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET;                   /**< Advertising handle used to identify an advertising set. */
@@ -118,7 +120,7 @@ static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];                    
 static uint8_t m_enc_scan_response_data[BLE_GAP_ADV_SET_DATA_SIZE_MAX];         /**< Buffer for storing an encoded scan data. */
 
 static volatile uint8_t hvn_tx_complete_flag = 0;
-static volatile uint8_t send_sensor_data_flag = 0;
+static volatile uint8_t button_state_send_flag = 0xFF;
 
 /**@brief Struct that contains pointers to the encoded advertising data. */
 static ble_gap_adv_data_t m_adv_data =
@@ -199,6 +201,11 @@ static void leds_init(void)
     bsp_board_init(BSP_INIT_LEDS);
 }
 
+static volatile uint8_t sense_flag = 0;
+static void sense_timer_handler(void * p_context)
+{
+    sense_flag = 1;
+}
 
 /**@brief Function for the Timer initialization.
  *
@@ -208,6 +215,15 @@ static void timers_init(void)
 {
     // Initialize timer module, making it use the scheduler
     ret_code_t err_code = app_timer_init();
+    APP_ERROR_CHECK(err_code);
+
+    // Create timers
+    err_code = app_timer_create(&m_sense_timer_id,
+                                APP_TIMER_MODE_REPEATED,
+                                sense_timer_handler);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = app_timer_start(m_sense_timer_id, APP_TIMER_TICKS(5000), NULL);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -310,26 +326,6 @@ static void nrf_qwr_error_handler(uint32_t nrf_error)
 {
     APP_ERROR_HANDLER(nrf_error);
 }
-
-
-///**@brief Function for handling write events to the LED characteristic.
-// *
-// * @param[in] p_lbs     Instance of LED Button Service to which the write applies.
-// * @param[in] led_state Written/desired state of the LED.
-// */
-//static void led_write_handler(uint16_t conn_handle, ble_lbs_t * p_lbs, uint8_t led_state)
-//{
-//    if (led_state)
-//    {
-//        bsp_board_led_on(LEDBUTTON_LED);
-//        NRF_LOG_INFO("Received LED ON!");
-//    }
-//    else
-//    {
-//        bsp_board_led_off(LEDBUTTON_LED);
-//        NRF_LOG_INFO("Received LED OFF!");
-//    }
-//}
 
 
 /**@brief Function for initializing services that will be used by the application.
@@ -546,21 +542,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
     switch (pin_no)
     {
         case LEDBUTTON_BUTTON:
-            //NRF_LOG_INFO("Send button state change.");
-            //err_code = ble_lbs_on_button_change(m_conn_handle, &m_lbs, button_action);
-            //if (err_code != NRF_SUCCESS &&
-            //        err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
-            //        err_code != NRF_ERROR_INVALID_STATE &&
-            //        err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-            //    {
-            //        if (err_code == NRF_ERROR_RESOURCES)
-            //        {
-            //            NRF_LOG_ERROR("Notification queue not big enough!");
-            //        }
-            //        APP_ERROR_CHECK(err_code);
-            //}
-
-            send_sensor_data_flag |= button_action;
+            button_state_send_flag = button_action;
             break;
 
         default:
@@ -620,6 +602,8 @@ static void idle_state_handle(void)
 }
 
 
+
+
 /**@brief Function for application main entry.
  */
 int main(void)
@@ -629,7 +613,7 @@ int main(void)
     leds_init();
     timers_init();
     buttons_init();
-    uart_init();
+    //uart_init();
     power_management_init();
     ble_stack_init();
     gap_params_init();
@@ -642,19 +626,43 @@ int main(void)
     NRF_LOG_INFO("Blinky example started.");
     advertising_start();
 
+    int counterthing = 0;
+
     // Enter main loop.
-    for (;;)
+    while(true)
     {
         ret_code_t err_code;
 
-        // SEND CANARY DUMMY DATA
-        for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; send_sensor_data_flag && char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
+        if (sense_flag == 1)
+        {
+            // SEND CANARY DUMMY DATA
+            for (uint16_t char_uuid = CANARY_UUID_PM1_CHAR; button_state_send_flag && char_uuid <= CANARY_UUID_BATTERY_CHAR; char_uuid++) {
 
-            //while (hvn_tx_complete_flag == 0) {};
-            //hvn_tx_complete_flag = 0;
+              err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid - counterthing);
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, char_uuid, 0xFFFF - char_uuid);
+              if (err_code != NRF_SUCCESS &&
+                  err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
+                  err_code != NRF_ERROR_INVALID_STATE &&
+                  err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+              {
+                  if (err_code == NRF_ERROR_RESOURCES)
+                  {
+                      NRF_LOG_ERROR("Notification queue not big enough!");
+                  }
+                  APP_ERROR_CHECK(err_code);
+              }
 
+            }
+
+            sense_flag = 0;
+            counterthing++;
+        }
+
+        if (button_state_send_flag != 0xFF) 
+        {
+            NRF_LOG_INFO("Send button state change.");
+            err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
+            
             if (err_code != NRF_SUCCESS &&
                 err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
                 err_code != NRF_ERROR_INVALID_STATE &&
@@ -667,9 +675,8 @@ int main(void)
                 APP_ERROR_CHECK(err_code);
             }
 
+            button_state_send_flag = 0xFF;
         }
-
-        send_sensor_data_flag = 0;
 
         idle_state_handle();
     }
