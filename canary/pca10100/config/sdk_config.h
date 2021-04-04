@@ -178,7 +178,7 @@
  
 
 #ifndef NRF_BLE_LESC_ENABLED
-#define NRF_BLE_LESC_ENABLED 1
+#define NRF_BLE_LESC_ENABLED 0
 #endif
 
 // <e> NRF_BLE_QWR_ENABLED - nrf_ble_qwr - Queued writes support module (prepare/execute write)
@@ -244,7 +244,7 @@
 // <i> If set to true, you need to call nrf_ble_lesc_request_handler() in the main loop to respond to LESC-related BLE events. If LESC support is not required, set this to false to save code space.
 
 #ifndef PM_LESC_ENABLED
-#define PM_LESC_ENABLED 1
+#define PM_LESC_ENABLED 0
 #endif
 
 // <e> PM_RA_PROTECTION_ENABLED - Enable/disable protection against repeated pairing attempts in Peer Manager.
@@ -315,7 +315,7 @@
 // <e> BLE_BAS_ENABLED - ble_bas - Battery Service
 //==========================================================
 #ifndef BLE_BAS_ENABLED
-#define BLE_BAS_ENABLED 1
+#define BLE_BAS_ENABLED 0
 #endif
 // <e> BLE_BAS_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
@@ -388,7 +388,7 @@
  
 
 #ifndef BLE_DIS_ENABLED
-#define BLE_DIS_ENABLED 1
+#define BLE_DIS_ENABLED 0
 #endif
 
 // <q> BLE_GLS_ENABLED  - ble_gls - Glucose Service
@@ -416,7 +416,7 @@
  
 
 #ifndef BLE_HRS_ENABLED
-#define BLE_HRS_ENABLED 1
+#define BLE_HRS_ENABLED 0
 #endif
 
 // <q> BLE_HTS_ENABLED  - ble_hts - Health Thermometer Service
@@ -1199,7 +1199,7 @@
 // <i> The nRF HW backend provide access to RNG peripheral in nRF5x devices.
 //==========================================================
 #ifndef NRF_CRYPTO_BACKEND_NRF_HW_RNG_ENABLED
-#define NRF_CRYPTO_BACKEND_NRF_HW_RNG_ENABLED 1
+#define NRF_CRYPTO_BACKEND_NRF_HW_RNG_ENABLED 0
 #endif
 // <q> NRF_CRYPTO_BACKEND_NRF_HW_RNG_MBEDTLS_CTR_DRBG_ENABLED  - Enable mbed TLS CTR-DRBG algorithm.
  
@@ -1235,7 +1235,7 @@
 // <i> The Oberon backend
 //==========================================================
 #ifndef NRF_CRYPTO_BACKEND_OBERON_ENABLED
-#define NRF_CRYPTO_BACKEND_OBERON_ENABLED 1
+#define NRF_CRYPTO_BACKEND_OBERON_ENABLED 0
 #endif
 // <q> NRF_CRYPTO_BACKEND_OBERON_CHACHA_POLY_ENABLED  - Enable the CHACHA-POLY mode using Oberon.
  
@@ -2435,7 +2435,7 @@
 // <e> NRFX_NFCT_ENABLED - nrfx_nfct - NFCT peripheral driver
 //==========================================================
 #ifndef NRFX_NFCT_ENABLED
-#define NRFX_NFCT_ENABLED 1
+#define NRFX_NFCT_ENABLED 0
 #endif
 // <o> NRFX_NFCT_CONFIG_IRQ_PRIORITY  - Interrupt priority
  
@@ -3130,7 +3130,7 @@
 // <e> NRFX_RNG_ENABLED - nrfx_rng - RNG peripheral driver
 //==========================================================
 #ifndef NRFX_RNG_ENABLED
-#define NRFX_RNG_ENABLED 1
+#define NRFX_RNG_ENABLED 0
 #endif
 // <q> NRFX_RNG_CONFIG_ERROR_CORRECTION  - Error correction
  
@@ -3867,13 +3867,13 @@
 // <e> NRFX_TIMER_ENABLED - nrfx_timer - TIMER periperal driver
 //==========================================================
 #ifndef NRFX_TIMER_ENABLED
-#define NRFX_TIMER_ENABLED 1
+#define NRFX_TIMER_ENABLED 0
 #endif
 // <q> NRFX_TIMER0_ENABLED  - Enable TIMER0 instance
  
 
 #ifndef NRFX_TIMER0_ENABLED
-//#define NRFX_TIMER0_ENABLED 0
+#define NRFX_TIMER0_ENABLED 0
 #endif
 
 // <q> NRFX_TIMER1_ENABLED  - Enable TIMER1 instance
@@ -3901,7 +3901,7 @@
  
 
 #ifndef NRFX_TIMER4_ENABLED
-#define NRFX_TIMER4_ENABLED 1
+#define NRFX_TIMER4_ENABLED 0
 #endif
 
 // <o> NRFX_TIMER_DEFAULT_CONFIG_FREQUENCY  - Timer frequency if in Timer mode
@@ -5273,7 +5273,7 @@
 // <e> RNG_ENABLED - nrf_drv_rng - RNG peripheral driver - legacy layer
 //==========================================================
 #ifndef RNG_ENABLED
-#define RNG_ENABLED 1
+#define RNG_ENABLED 0
 #endif
 // <q> RNG_CONFIG_ERROR_CORRECTION  - Error correction
  
@@ -5586,7 +5586,7 @@
 // <e> TIMER_ENABLED - nrf_drv_timer - TIMER periperal driver - legacy layer
 //==========================================================
 #ifndef TIMER_ENABLED
-#define TIMER_ENABLED 1
+#define TIMER_ENABLED 0
 #endif
 // <o> TIMER_DEFAULT_CONFIG_FREQUENCY  - Timer frequency if in Timer mode
  
@@ -5674,7 +5674,7 @@
  
 
 #ifndef TIMER4_ENABLED
-#define TIMER4_ENABLED 1
+#define TIMER4_ENABLED 0
 #endif
 
 // </e>
@@ -6245,13 +6245,13 @@
  
 
 #ifndef APP_FIFO_ENABLED
-#define APP_FIFO_ENABLED 1
+#define APP_FIFO_ENABLED 0
 #endif
 
 // <e> APP_UART_ENABLED - app_uart - UART driver
 //==========================================================
 #ifndef APP_UART_ENABLED
-#define APP_UART_ENABLED 1
+#define APP_UART_ENABLED 0
 #endif
 // <o> APP_UART_DRIVER_INSTANCE  - UART instance used
  
@@ -6608,7 +6608,7 @@
  
 
 #ifndef CRC16_ENABLED
-#define CRC16_ENABLED 1
+#define CRC16_ENABLED 0
 #endif
 
 // <q> CRC32_ENABLED  - crc32 - CRC32 calculation routines
@@ -6859,7 +6859,7 @@
 // <e> MEM_MANAGER_ENABLED - mem_manager - Dynamic memory allocator
 //==========================================================
 #ifndef MEM_MANAGER_ENABLED
-#define MEM_MANAGER_ENABLED 1
+#define MEM_MANAGER_ENABLED 0
 #endif
 // <o> MEMORY_MANAGER_SMALL_BLOCK_COUNT - Size of each memory blocks identified as 'small' block.  <0-255> 
 
@@ -7346,7 +7346,7 @@
 // <e> NRF_QUEUE_ENABLED - nrf_queue - Queue module
 //==========================================================
 #ifndef NRF_QUEUE_ENABLED
-#define NRF_QUEUE_ENABLED 1
+#define NRF_QUEUE_ENABLED 0
 #endif
 // <q> NRF_QUEUE_CLI_CMDS  - Enable CLI commands specific to the module
  
@@ -10665,7 +10665,7 @@
  
 
 #ifndef NFC_AC_REC_ENABLED
-#define NFC_AC_REC_ENABLED 1
+#define NFC_AC_REC_ENABLED 0
 #endif
 
 // <q> NFC_AC_REC_PARSER_ENABLED  - nfc_ac_rec_parser - Alternative Carrier record parser
@@ -10678,7 +10678,7 @@
 // <e> NFC_BLE_OOB_ADVDATA_ENABLED - nfc_ble_oob_advdata - AD data for OOB pairing encoder
 //==========================================================
 #ifndef NFC_BLE_OOB_ADVDATA_ENABLED
-#define NFC_BLE_OOB_ADVDATA_ENABLED 1
+#define NFC_BLE_OOB_ADVDATA_ENABLED 0
 #endif
 // <o> ADVANCED_ADVDATA_SUPPORT  - Non-mandatory AD types for BLE OOB pairing are encoded inside the NDEF message (e.g. service UUIDs)
  
@@ -10701,7 +10701,7 @@
 // <e> NFC_BLE_PAIR_LIB_ENABLED - nfc_ble_pair_lib - Library parameters
 //==========================================================
 #ifndef NFC_BLE_PAIR_LIB_ENABLED
-#define NFC_BLE_PAIR_LIB_ENABLED 1
+#define NFC_BLE_PAIR_LIB_ENABLED 0
 #endif
 // <e> NFC_BLE_PAIR_LIB_LOG_ENABLED - Enables logging in the module.
 //==========================================================
@@ -10837,35 +10837,35 @@
  
 
 #ifndef NFC_BLE_PAIR_MSG_ENABLED
-#define NFC_BLE_PAIR_MSG_ENABLED 1
+#define NFC_BLE_PAIR_MSG_ENABLED 0
 #endif
 
 // <q> NFC_CH_COMMON_ENABLED  - nfc_ble_pair_common - OOB pairing common data
  
 
 #ifndef NFC_CH_COMMON_ENABLED
-#define NFC_CH_COMMON_ENABLED 1
+#define NFC_CH_COMMON_ENABLED 0
 #endif
 
 // <q> NFC_EP_OOB_REC_ENABLED  - nfc_ep_oob_rec - EP record for BLE pairing encoder
  
 
 #ifndef NFC_EP_OOB_REC_ENABLED
-#define NFC_EP_OOB_REC_ENABLED 1
+#define NFC_EP_OOB_REC_ENABLED 0
 #endif
 
 // <q> NFC_HS_REC_ENABLED  - nfc_hs_rec - Handover Select NDEF record encoder
  
 
 #ifndef NFC_HS_REC_ENABLED
-#define NFC_HS_REC_ENABLED 1
+#define NFC_HS_REC_ENABLED 0
 #endif
 
 // <q> NFC_LE_OOB_REC_ENABLED  - nfc_le_oob_rec - LE record for BLE pairing encoder
  
 
 #ifndef NFC_LE_OOB_REC_ENABLED
-#define NFC_LE_OOB_REC_ENABLED 1
+#define NFC_LE_OOB_REC_ENABLED 0
 #endif
 
 // <q> NFC_LE_OOB_REC_PARSER_ENABLED  - nfc_le_oob_rec_parser - LE record parser
@@ -10892,7 +10892,7 @@
 // <e> NFC_NDEF_MSG_ENABLED - nfc_ndef_msg - NFC NDEF Message generator module
 //==========================================================
 #ifndef NFC_NDEF_MSG_ENABLED
-#define NFC_NDEF_MSG_ENABLED 1
+#define NFC_NDEF_MSG_ENABLED 0
 #endif
 // <o> NFC_NDEF_MSG_TAG_TYPE  - NFC Tag Type
  
@@ -10951,7 +10951,7 @@
  
 
 #ifndef NFC_NDEF_RECORD_ENABLED
-#define NFC_NDEF_RECORD_ENABLED 1
+#define NFC_NDEF_RECORD_ENABLED 0
 #endif
 
 // <e> NFC_NDEF_RECORD_PARSER_ENABLED - nfc_ndef_record_parser - NFC NDEF Record parser module
@@ -11020,7 +11020,7 @@
 // <e> NFC_PLATFORM_ENABLED - nfc_platform - NFC platform module for Clock control.
 //==========================================================
 #ifndef NFC_PLATFORM_ENABLED
-#define NFC_PLATFORM_ENABLED 1
+#define NFC_PLATFORM_ENABLED 0
 #endif
 // <e> NFC_PLATFORM_LOG_ENABLED - Enables logging in the module.
 //==========================================================
@@ -11413,7 +11413,7 @@
  
 
 #ifndef NRF_SDH_BLE_SERVICE_CHANGED
-#define NRF_SDH_BLE_SERVICE_CHANGED 1
+#define NRF_SDH_BLE_SERVICE_CHANGED 0
 #endif
 
 // </h> 

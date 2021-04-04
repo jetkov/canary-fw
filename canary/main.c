@@ -619,7 +619,7 @@ static void handle_notification_error(ret_code_t err_code)
     {
         if (err_code == NRF_ERROR_RESOURCES)
         {
-            NRF_LOG_ERROR("Notification queue not big enough!");
+            //NRF_LOG_ERROR("Notification queue not big enough!");
         }
         APP_ERROR_CHECK(err_code);
     }
