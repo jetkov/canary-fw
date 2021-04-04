@@ -38,7 +38,7 @@
  *
  */
 
-
+#define USE_APP_CONFIG
 
 #ifndef SDK_CONFIG_H
 #define SDK_CONFIG_H
@@ -3873,7 +3873,7 @@
  
 
 #ifndef NRFX_TIMER0_ENABLED
-#define NRFX_TIMER0_ENABLED 0
+//#define NRFX_TIMER0_ENABLED 0
 #endif
 
 // <q> NRFX_TIMER1_ENABLED  - Enable TIMER1 instance
