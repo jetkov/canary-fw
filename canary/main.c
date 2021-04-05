@@ -630,6 +630,62 @@ static void handle_notification_error(ret_code_t err_code)
     }
 }
 
+uint16_t calculate_aqi(uint16_t * con_breaks, uint16_t * aqi_breaks, uint8_t num_breaks, uint16_t concentration)
+{
+    uint8_t lo_idx;
+    uint16_t aqi_lo;
+
+    for (lo_idx = 0; lo_idx < (num_breaks - 1); lo_idx++)
+    {
+        if (con_breaks[lo_idx] <= concentration && concentration < con_breaks[lo_idx+1])
+        {
+            aqi_lo = aqi_breaks[lo_idx];
+            
+            if (aqi_lo > 0)
+            {
+                aqi_lo += 1;
+            }
+
+            //printf("\r\nAQI_LO: %d\r\n", aqi_lo);
+            //printf("AQI_HI: %d\r\n", aqi_breaks[lo_idx+1]);
+            //printf("CON_LO: %d\r\n", con_breaks[lo_idx]);
+            //printf("CON_HI: %d\r\n", con_breaks[lo_idx+1]);
+
+            return ((float)(aqi_breaks[lo_idx+1] - aqi_breaks[lo_idx]))/((float)(con_breaks[lo_idx+1] - con_breaks[lo_idx])) * ((float)(concentration - con_breaks[lo_idx])) + ((float)aqi_breaks[lo_idx]);
+        }
+    }
+}
+
+uint16_t calculate_aqi_pm2_5(uint16_t pm2_5)
+{
+    uint16_t con_breaks[7] = {0, 12,  35,  55, 150, 250, 500};
+    uint16_t aqi_breaks[7] = {0, 50, 100, 150, 200, 300, 500};
+
+    return calculate_aqi(con_breaks, aqi_breaks, 7, pm2_5);
+}
+
+#define PM_UART_HEAD_1        (0x42)
+#define PM_UART_HEAD_2        (0x4D)
+#define PM_UART_DATA_LEN      (2*13 + 2)
+#define PM_UART_FRAME_LEN     (32)
+
+#define PM_UART_IDX_HEAD_1    (0)
+#define PM_UART_IDX_HEAD_2    (1)
+#define PM_UART_IDX_H_LENGTH  (2)
+#define PM_UART_IDX_L_LENGTH  (3)
+
+#define PM_UART_IDX_H_D1      (4) // PM1
+#define PM_UART_IDX_L_D1      (5) // PM1
+#define PM_UART_IDX_H_D2      (6) // PM2.5
+#define PM_UART_IDX_L_D2      (7) // PM2.5
+#define PM_UART_IDX_H_D3      (8) // PM10
+#define PM_UART_IDX_L_D3      (9) // PM10
+
+#define PM_UART_IDX_L_D13     (29) // Error [0b0ABCDEF] [C = 1 High temp alarm, D = 1 Low temp alarm, E = 1 Fan error]
+
+#define PM_UART_IDX_H_CS      (30) // Checksum [CS = HEAD1 + HEAD2 + ... + L_D]
+#define PM_UART_IDX_L_CS      (31) // Checksum
+
 /**@brief Function for application main entry.
  */
 int main(void)
@@ -659,6 +715,11 @@ int main(void)
 
     int counterthing = 0;
 
+    uint16_t sensor_val_pm1;
+    uint16_t sensor_val_pm2_5;
+    uint16_t sensor_val_pm10;
+    uint16_t sensor_val_pm_aqi;
+
     // Enter main loop.
     while(true)
     {
@@ -668,65 +729,108 @@ int main(void)
         {
             nrf_libuarte_drv_rx_start(&libuarte, pm_uarte_buffer, PM_UART_BUFFER_LEN, false);
             while (pm_uarte_rx_complete == 0);
-            printf("\r\n\r\n");
-            for (int i = 0; i < PM_UART_BUFFER_LEN; i++) {
-                printf("%.02X ", pm_uarte_buffer[i]);
-            }
-            printf("\r\n\r\n");
             pm_uarte_rx_complete == 0;
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      1 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);    
+            printf("\r\n");
+            for (int i = 0; i < PM_UART_BUFFER_LEN; i++) {
+                printf("%02X ", pm_uarte_buffer[i]);
+            }
+            printf("\r\n");
+            
+            for (int i = 0; i < PM_UART_BUFFER_LEN - PM_UART_FRAME_LEN; i++) {
+                if (pm_uarte_buffer[i] == PM_UART_HEAD_1 && pm_uarte_buffer[i+1] == PM_UART_HEAD_2)
+                {
+                    uint16_t calc_checksum = 0;
+                    for (int j = 0; j < (i + PM_UART_FRAME_LEN - 2); j++)
+                    {
+                        calc_checksum += pm_uarte_buffer[j];
+                    }
+                    
+                    uint16_t rx_checksum = (pm_uarte_buffer[i+PM_UART_IDX_H_CS] << 8) | pm_uarte_buffer[i+PM_UART_IDX_L_CS];
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    2 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);    
+                    printf("Calculated checksum: %04X \r\n", calc_checksum);
+                    printf("Recieved   checksum: %04X \r\n", rx_checksum);
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     3 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);        
+                    if (calc_checksum != rx_checksum)
+                    {
+                        NRF_LOG_WARNING("PM UART checksum failure!");
+                        break;
+                    }
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  4 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+                    if (pm_uarte_buffer[i+PM_UART_IDX_L_D13] != 0)
+                    {
+                        NRF_LOG_ERROR("PM SENSOR ERROR! [%02X]", pm_uarte_buffer[i+PM_UART_IDX_L_D13]);
+                    }
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      5 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+                    sensor_val_pm1   = pm_uarte_buffer[i+PM_UART_IDX_H_D1]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D1];
+                    sensor_val_pm2_5 = pm_uarte_buffer[i+PM_UART_IDX_H_D2]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D2];
+                    sensor_val_pm10  = pm_uarte_buffer[i+PM_UART_IDX_H_D3]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D3];
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     6 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+                    sensor_val_pm_aqi = calculate_aqi_pm2_5(sensor_val_pm2_5);
+                    
+                    printf("PM1:   %d\r\n", sensor_val_pm1);
+                    printf("PM2.5: %d\r\n", sensor_val_pm2_5);
+                    printf("PM10:  %d\r\n", sensor_val_pm10);
+                    printf("AQI:   %d\r\n", sensor_val_pm_aqi);
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 7 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+                    break;
+                }
+            }
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   0 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+            
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  8 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      sensor_val_pm1);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);    
 
-            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  9 + (counterthing % 5) * 100);
-            //handle_notification_error(err_code);
-            //nrf_delay_ms(30);   
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    sensor_val_pm2_5);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);    
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     sensor_val_pm10);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);        
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  0);//4 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      0);//5 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     0);//6 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 0);//7 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   sensor_val_pm_aqi);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  0);//8 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
+
+            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  0);//9 + (counterthing % 5) * 100);
+            handle_notification_error(err_code);
+            nrf_delay_ms(50);   
 
             sense_flag = 0;
             counterthing++;
         }
 
-        //if (button_state_send_flag != 0xFF) 
-        //{
-        //    NRF_LOG_INFO("Send button state change.");
-        //    err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
-        //    handle_notification_error(err_code);
+        if (button_state_send_flag != 0xFF) 
+        {
+            NRF_LOG_INFO("Send button state change.");
+            err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
+            handle_notification_error(err_code);
 
-        //    button_state_send_flag = 0xFF;
-        //}
+            button_state_send_flag = 0xFF;
+        }
 
         idle_state_handle();
     }
