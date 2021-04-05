@@ -637,7 +637,7 @@ uint16_t calculate_aqi(uint16_t * con_breaks, uint16_t * aqi_breaks, uint8_t num
 
     for (lo_idx = 0; lo_idx < (num_breaks - 1); lo_idx++)
     {
-        if (con_breaks[lo_idx] <= concentration && concentration < con_breaks[lo_idx+1])
+        if ((con_breaks[lo_idx] <= concentration && concentration < con_breaks[lo_idx+1]) || ((lo_idx+1) == (num_breaks-1)) && (concentration >= con_breaks[num_breaks-1]))
         {
             aqi_lo = aqi_breaks[lo_idx];
             
@@ -654,6 +654,7 @@ uint16_t calculate_aqi(uint16_t * con_breaks, uint16_t * aqi_breaks, uint8_t num
             return ((float)(aqi_breaks[lo_idx+1] - aqi_breaks[lo_idx]))/((float)(con_breaks[lo_idx+1] - con_breaks[lo_idx])) * ((float)(concentration - con_breaks[lo_idx])) + ((float)aqi_breaks[lo_idx]);
         }
     }
+
 }
 
 uint16_t calculate_aqi_pm2_5(uint16_t pm2_5)
@@ -765,6 +766,10 @@ int main(void)
                     sensor_val_pm1   = pm_uarte_buffer[i+PM_UART_IDX_H_D1]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D1];
                     sensor_val_pm2_5 = pm_uarte_buffer[i+PM_UART_IDX_H_D2]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D2];
                     sensor_val_pm10  = pm_uarte_buffer[i+PM_UART_IDX_H_D3]*256 + pm_uarte_buffer[i+PM_UART_IDX_L_D3];
+
+                    //sensor_val_pm1   = 1+ (counterthing % 20) * 50;
+                    //sensor_val_pm2_5 = 2+ (counterthing % 20) * 50;
+                    //sensor_val_pm10  = 3+ (counterthing % 20) * 50;
 
                     sensor_val_pm_aqi = calculate_aqi_pm2_5(sensor_val_pm2_5);
                     
