@@ -65,7 +65,6 @@
 #include "nrf_pwr_mgmt.h"
 
 #include "nrf_libuarte_drv.h"
-//#include "nrf_libuarte_async.h"
 #include "nrf_queue.h"
 
 #include "nrf_delay.h"
@@ -107,14 +106,8 @@ BLE_LBS_DEF(m_lbs);                                                             
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
 NRF_BLE_QWR_DEF(m_qwr);                                                         /**< Context for the Queued Write module.*/
 
-typedef struct {
-    uint8_t * p_data;
-    uint32_t length;
-} buffer_t;
 
 NRF_LIBUARTE_DRV_DEFINE(libuarte, 0, 1);
-//NRF_LIBUARTE_ASYNC_DEFINE(libuarte, 0, 1, 0, NRF_LIBUARTE_PERIPHERAL_NOT_USED, 255, 3);
-NRF_QUEUE_DEF(buffer_t, m_uarte_buf_queue, 10, NRF_QUEUE_MODE_NO_OVERFLOW);
 
 APP_TIMER_DEF(m_sense_timer_id);
 
@@ -123,6 +116,10 @@ static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                        
 static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET;                   /**< Advertising handle used to identify an advertising set. */
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];                    /**< Buffer for storing an encoded advertising set. */
 static uint8_t m_enc_scan_response_data[BLE_GAP_ADV_SET_DATA_SIZE_MAX];         /**< Buffer for storing an encoded scan data. */
+
+#define PM_UART_BUFFER_LEN 64
+static uint8_t pm_uarte_buffer[PM_UART_BUFFER_LEN];
+static volatile uint8_t pm_uarte_rx_complete = 0;
 
 static volatile uint8_t hvn_tx_complete_flag = 0;
 static volatile uint8_t button_state_send_flag = 0xFF;
@@ -168,58 +165,20 @@ void uart_event_handler(void * context, nrf_libuarte_drv_evt_t * p_evt)
     switch (p_evt->type)
     {
         case NRF_LIBUARTE_DRV_EVT_RX_DATA:        ///< Data received.
+            nrf_libuarte_drv_rx_stop(&libuarte);
+            nrfx_timer_disable(&p_libuarte->timer);
+            pm_uarte_rx_complete = 1;
             break;
         case NRF_LIBUARTE_DRV_EVT_RX_BUF_REQ:     ///< Requesting new buffer for receiving data.
             break;
         case NRF_LIBUARTE_DRV_EVT_TX_DONE:        ///< Requested TX transfer completed.
             break;
         case NRF_LIBUARTE_DRV_EVT_ERROR:          ///< Error reported by the UARTE peripheral.
+            NRF_LOG_ERROR("NRF_LIBUARTE_DRV_EVT_ERROR")
             break;
         case NRF_LIBUARTE_DRV_EVT_OVERRUN_ERROR:  ///< Error reported by the driver.
             break;
-
-        //case NRF_LIBUARTE_ASYNC_EVT_ERROR:
-        //    //bsp_board_led_invert(0);
-        //    break;
-        //case NRF_LIBUARTE_ASYNC_EVT_RX_DATA:;
-        //    //buffer_t buf = {
-        //    //    .p_data = p_evt->data.rxtx.p_data,
-        //    //    .length = p_evt->data.rxtx.length,
-        //    //};
-
-        //    //ret = nrf_queue_push(&m_uarte_buf_queue, &buf);
-        //    //APP_ERROR_CHECK(ret);
-
-        //    break;
-        //case NRF_LIBUARTE_ASYNC_EVT_TX_DONE:
-        //    break;
-        //default:
-        //    break;
     }
-
-//    nrf_libuarte_async_t * p_libuarte = (nrf_libuarte_async_t *)context;
-//    ret_code_t ret;
-
-//    switch (p_evt->type)
-//    {
-//        case NRF_LIBUARTE_ASYNC_EVT_ERROR:
-//            //bsp_board_led_invert(0);
-//            break;
-//        case NRF_LIBUARTE_ASYNC_EVT_RX_DATA:;
-//            //buffer_t buf = {
-//            //    .p_data = p_evt->data.rxtx.p_data,
-//            //    .length = p_evt->data.rxtx.length,
-//            //};
-
-//            //ret = nrf_queue_push(&m_uarte_buf_queue, &buf);
-//            //APP_ERROR_CHECK(ret);
-
-//            break;
-//        case NRF_LIBUARTE_ASYNC_EVT_TX_DONE:
-//            break;
-//        default:
-//            break;
-//    }
 }
 
 static void uart_init(void)
@@ -242,21 +201,8 @@ static void uart_init(void)
             .pullup_rx     = 0
     };
 
-    nrf_libuarte_drv_init(&libuarte, &nrf_libuarte_drv_config, uart_event_handler, (void *)&libuarte);
+    err_code = nrf_libuarte_drv_init(&libuarte, &nrf_libuarte_drv_config, uart_event_handler, (void *)&libuarte);
     APP_ERROR_CHECK(err_code);
-
-    //nrf_libuarte_async_config_t nrf_libuarte_async_config = {
-    //        .tx_pin     = TX_PIN_NUMBER,
-    //        .rx_pin     = RX_PIN_NUMBER,
-    //        .baudrate   = NRF_UARTE_BAUDRATE_9600,
-    //        .parity     = NRF_UARTE_PARITY_EXCLUDED,
-    //        .hwfc       = NRF_UARTE_HWFC_DISABLED,
-    //        .timeout_us = 100,
-    //        .int_prio   = APP_IRQ_PRIORITY_LOW_MID
-    //};
-
-    //err_code = nrf_libuarte_async_init(&libuarte, &nrf_libuarte_async_config, uart_event_handler, (void *)&libuarte);
-    //APP_ERROR_CHECK(err_code);
 }
 
 
@@ -698,7 +644,7 @@ int main(void)
     leds_init();
     timers_init();
     buttons_init();
-    //uart_init();
+    uart_init();
     power_management_init();
     ble_stack_init();
     gap_params_init();
@@ -708,72 +654,79 @@ int main(void)
     conn_params_init();
 
     // Start execution.
-    NRF_LOG_INFO("Blinky example started.");
+    NRF_LOG_INFO("===== CANARY STARTED =====");
     advertising_start();
-
-    //nrf_libuarte_async_enable(&libuarte);
 
     int counterthing = 0;
 
     // Enter main loop.
     while(true)
     {
-        ret_code_t err_code;
+        ret_code_t err_code;       
 
         if (sense_flag == 1)
         {
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      1 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);    
+            nrf_libuarte_drv_rx_start(&libuarte, pm_uarte_buffer, PM_UART_BUFFER_LEN, false);
+            while (pm_uarte_rx_complete == 0);
+            printf("\r\n\r\n");
+            for (int i = 0; i < PM_UART_BUFFER_LEN; i++) {
+                printf("%.02X ", pm_uarte_buffer[i]);
+            }
+            printf("\r\n\r\n");
+            pm_uarte_rx_complete == 0;
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    2 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);    
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      1 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);    
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     3 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);        
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    2 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);    
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  4 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     3 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);        
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      5 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  4 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     6 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      5 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 7 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     6 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   0 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 7 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  8 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   0 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  9 + (counterthing % 5) * 100);
-            handle_notification_error(err_code);
-            nrf_delay_ms(30);   
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  8 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
+
+            //err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  9 + (counterthing % 5) * 100);
+            //handle_notification_error(err_code);
+            //nrf_delay_ms(30);   
 
             sense_flag = 0;
             counterthing++;
         }
 
-        if (button_state_send_flag != 0xFF) 
-        {
-            NRF_LOG_INFO("Send button state change.");
-            err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
-            handle_notification_error(err_code);
+        //if (button_state_send_flag != 0xFF) 
+        //{
+        //    NRF_LOG_INFO("Send button state change.");
+        //    err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
+        //    handle_notification_error(err_code);
 
-            button_state_send_flag = 0xFF;
-        }
+        //    button_state_send_flag = 0xFF;
+        //}
 
         idle_state_handle();
     }

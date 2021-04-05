@@ -10,6 +10,7 @@
 // <3=> Info 
 // <4=> Debug 
 #define NRF_LOG_DEFAULT_LEVEL           4
+#define NRF_LIBUARTE_CONFIG_LOG_LEVEL 4
 
 #define NRF_SDH_BLE_GAP_EVENT_LENGTH    500
 #define NRF_SDH_BLE_VS_UUID_COUNT       16
