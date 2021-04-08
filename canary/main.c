@@ -52,6 +52,7 @@
 #include "app_timer.h"
 #include "app_button.h"
 #include "nrf_pwr_mgmt.h"
+#include "nrf_gpio.h"
 
 #include "nrf_libuarte_drv.h"
 #include "nrf_queue.h"
@@ -73,20 +74,19 @@
 #define DEAD_BEEF                       0xDEADBEEF                              /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 #define NOT_CONNECTED                   0xFFFFFFFF
 
-
-
-
 NRF_LIBUARTE_DRV_DEFINE(libuarte, 0, 1);
 
 APP_TIMER_DEF(m_sense_timer_id);
 
-
-
 #define PM_UART_BUFFER_LEN 64
+
 static uint8_t pm_uarte_buffer[PM_UART_BUFFER_LEN];
 static volatile uint8_t pm_uarte_rx_complete = 0;
 
 static volatile uint8_t button_state_send_flag = 0xFF;
+
+ble_lbs_t * p_lbs;
+uint16_t m_conn_handle;
 
 /**@brief Function for assert macro callback.
  *
@@ -185,7 +185,7 @@ static void timers_init(void)
                                 sense_timer_handler);
     APP_ERROR_CHECK(err_code);
 
-    err_code = app_timer_start(m_sense_timer_id, APP_TIMER_TICKS(5000), NULL);
+    err_code = app_timer_start(m_sense_timer_id, APP_TIMER_TICKS(10000), NULL);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -273,7 +273,7 @@ static void handle_notification_error(ret_code_t err_code)
     {
         if (err_code == NRF_ERROR_RESOURCES)
         {
-            //NRF_LOG_ERROR("Notification queue not big enough!");
+            NRF_LOG_ERROR("Notification queue not big enough!");
         }
         APP_ERROR_CHECK(err_code);
     }
@@ -354,6 +354,33 @@ int main(void)
     power_management_init();
     ble_stack_init();
 
+    p_lbs = get_p_lbs();
+    m_conn_handle = get_conn_handle();
+
+    nrf_gpio_cfg(N_PM_SLEEP,
+                 NRF_GPIO_PIN_DIR_OUTPUT,
+                 NRF_GPIO_PIN_INPUT_DISCONNECT,
+                 NRF_GPIO_PIN_NOPULL,
+                 NRF_GPIO_PIN_S0D1,
+                 NRF_GPIO_PIN_NOSENSE);
+
+    nrf_gpio_cfg(N_PM_RST,
+                 NRF_GPIO_PIN_DIR_OUTPUT,
+                 NRF_GPIO_PIN_INPUT_DISCONNECT,
+                 NRF_GPIO_PIN_NOPULL,
+                 NRF_GPIO_PIN_S0D1,
+                 NRF_GPIO_PIN_NOSENSE);
+
+    nrf_gpio_cfg_output(EN_5V);
+
+    nrf_gpio_pin_write(N_PM_SLEEP, 1);
+    nrf_gpio_pin_write(N_PM_RST, 1);
+    nrf_gpio_pin_write(EN_5V, 1);
+
+    // Cannot leave floating!
+    nrf_gpio_cfg_output(PIEZO_PWM);
+    nrf_gpio_pin_write(PIEZO_PWM, 0);
+
     // Start execution.
     NRF_LOG_INFO("===== CANARY STARTED =====");
     advertising_start();
@@ -371,9 +398,27 @@ int main(void)
         ret_code_t err_code;       
 
         if (sense_flag == 1)
-        {
+        { 
+            //nrf_gpio_pin_write(N_PM_SLEEP, 1);
+            //nrf_gpio_pin_write(EN_5V, 1);
+            //nrf_delay_ms(200);
+            //nrf_gpio_pin_write(N_PM_RST, 1);
+            //nrf_delay_ms(5000);
+            //printf("5V Enabled\r\n");
+
             nrf_libuarte_drv_rx_start(&libuarte, pm_uarte_buffer, PM_UART_BUFFER_LEN, false);
-            while (pm_uarte_rx_complete == 0);
+
+            uint8_t timeout_counter = 0;
+            while (pm_uarte_rx_complete == 0)
+            {
+                timeout_counter++;
+
+                if (timeout_counter > 200) 
+                {
+                    NRF_LOG_WARNING("PM UART timed out!");
+                    break;
+                }
+            }
             pm_uarte_rx_complete == 0;
 
             printf("\r\n");
@@ -426,45 +471,48 @@ int main(void)
                 }
             }
 
-            
+            //nrf_gpio_pin_write(EN_5V, 0);
+            //nrf_gpio_pin_write(N_PM_SLEEP, 0);
+            //nrf_gpio_pin_write(N_PM_RST, 0);
+            //printf("5V Disabled\r\n");
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM1_CHAR,      sensor_val_pm1);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_PM1_CHAR,      sensor_val_pm1);
             handle_notification_error(err_code);
             nrf_delay_ms(50);    
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM2_5_CHAR,    sensor_val_pm2_5);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_PM2_5_CHAR,    sensor_val_pm2_5);
             handle_notification_error(err_code);
             nrf_delay_ms(50);    
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM10_CHAR,     sensor_val_pm10);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_PM10_CHAR,     sensor_val_pm10);
             handle_notification_error(err_code);
             nrf_delay_ms(50);        
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_VOC_IDX_CHAR,  0);//4 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_VOC_IDX_CHAR,  0);//4 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_CHAR,      0);//5 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_GAS_CHAR,      0);//5 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_TEMP_CHAR,     0);//6 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_TEMP_CHAR,     0);//6 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_HUMIDITY_CHAR, 0);//7 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_HUMIDITY_CHAR, 0);//7 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_PM_AQI_CHAR,   sensor_val_pm_aqi);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_PM_AQI_CHAR,   sensor_val_pm_aqi);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_GAS_AQI_CHAR,  0);//8 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_GAS_AQI_CHAR,  0);//8 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
-            err_code = ble_canary_notify_uint16(m_conn_handle, &m_lbs, CANARY_UUID_BATTERY_CHAR,  0);//9 + (counterthing % 5) * 100);
+            err_code = ble_canary_notify_uint16(m_conn_handle, p_lbs, CANARY_UUID_BATTERY_CHAR,  0);//9 + (counterthing % 5) * 100);
             handle_notification_error(err_code);
             nrf_delay_ms(50);   
 
@@ -472,14 +520,14 @@ int main(void)
             counterthing++;
         }
 
-        if (button_state_send_flag != 0xFF) 
-        {
-            NRF_LOG_INFO("Send button state change.");
-            err_code = ble_canary_notify(m_conn_handle, &m_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
-            handle_notification_error(err_code);
+        //if (button_state_send_flag != 0xFF) 
+        //{
+        //    NRF_LOG_INFO("Send button state change.");
+        //    err_code = ble_canary_notify(m_conn_handle, p_lbs, CANARY_UUID_BUTTON_CHAR, &button_state_send_flag, 1);
+        //    handle_notification_error(err_code);
 
-            button_state_send_flag = 0xFF;
-        }
+        //    button_state_send_flag = 0xFF;
+        //}
 
         idle_state_handle();
     }

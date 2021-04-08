@@ -2,6 +2,10 @@
 <session>
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <BreakpointListItem trigger="" line="116" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="121" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="123" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="128" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../main.c" useHWbreakpoint="false"/>
   <BreakpointListItem trigger="" line="40" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../../nRF5SDK1702d674dde/components/boards/pca10040.h" useHWbreakpoint="false"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
@@ -59,9 +63,19 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../main.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble.c" selected="1" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="477" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../main.c" selected="1" top="407" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="121" y="6" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="50" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="config/sdk_config.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="73" y="198" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble_service.c" selected="0" top="155" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="85" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/canary_ble/canary_ble.c" useBinaryEdit="0" left="0" path="../canary_ble/canary_ble_service.h" selected="0" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="21" y="548" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="../../nRF5SDK1702d674dde/modules/nrfx/hal/nrf_gpio.h" selected="0" top="505" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="59" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="config/custom_board.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../app_config.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../nRF5SDK1702d674dde/components/libraries/util/app_error_weak.c" selected="0" top="56" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="605" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/main.c" useBinaryEdit="0" left="0" path="../../nRF5SDK1702d674dde/components/libraries/libuarte/nrf_libuarte_drv.c" selected="0" top="562" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="247" useTextEdit="1" openedFrom="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/nRF5SDK1702d674dde/components/libraries/libuarte/nrf_libuarte_drv.c" useBinaryEdit="0" left="0" path="../../nRF5SDK1702d674dde/components/libraries/libuarte/nrf_libuarte_drv.h" selected="0" top="191" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../nRF5SDK1702d674dde/components/boards/boards.c" selected="0" top="21" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="canary_pca10040_s132" fileDialogDefaultFilter="*.c;*.cpp;*.cxx;*.cc;*.h;*.hpp;*.hxx" autoConnectTarget="J-Link" buildConfiguration="Canary (Debug)" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/canary_ble" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="canary_pca10040_s132" fileDialogDefaultFilter="*.c;*.cpp;*.cxx;*.cc;*.h;*.hpp;*.hxx" autoConnectTarget="J-Link" buildConfiguration="Canary (Debug)" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/Alex/Documents/SEGGER Embedded Studio for ARM Projects/canary-fw/canary/canary_ble" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

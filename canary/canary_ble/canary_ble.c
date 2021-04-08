@@ -1,5 +1,21 @@
 #include "canary_ble.h"
 
+BLE_LBS_DEF(m_lbs);                                                             /**< LED Button Service instance. */
+NRF_BLE_QWR_DEF(m_qwr);                                                         /**< Context for the Queued Write module.*/
+NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
+
+static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                        /**< Handle of the current connection. */
+
+ble_lbs_t * get_p_lbs(void) 
+{
+    return &m_lbs;
+}
+
+uint16_t get_conn_handle(void) 
+{
+    return m_conn_handle;
+}
+
 /**@brief Function for the GAP initialization.
  *
  * @details This function sets up all the necessary GAP (Generic Access Profile) parameters of the
