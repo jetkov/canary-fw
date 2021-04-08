@@ -39,7 +39,7 @@ extern "C" {
 #define BSP_BUTTON_0   BUTTON_1
 
 #define LMP_VOUT_B     5
-#define MCU_PM_UART_TX 29
+#define MCU_PM_UART_TX 9
 #define MCU_PM_UART_RX 10
 #define N_PM_SLEEP     11
 
@@ -52,6 +52,7 @@ extern "C" {
 
 #define N_PM_RST       20
 #define CHG_STAT       22
+#define PS_3V3         23
 #define EN_VDD         24
 #define EN_5V          25
 #define EN_VREF        26

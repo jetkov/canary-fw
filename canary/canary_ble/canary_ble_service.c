@@ -204,5 +204,3 @@ uint32_t ble_canary_notify_uint16(uint16_t conn_handle, ble_lbs_t * p_lbs, uint1
 
     return ble_canary_notify(conn_handle, p_lbs, uuid, dataArray, 2);
 }
-
-//#endif // NRF_MODULE_ENABLED(BLE_LBS)
